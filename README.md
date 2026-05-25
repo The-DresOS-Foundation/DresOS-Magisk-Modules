@@ -14,7 +14,7 @@ Part of the [DresOS Android Defensive Security System](https://github.com/DresOp
 
 Replaces Android System WebView with [AOSmium](https://axpos.org/), a Chromium fork hardened with GrapheneOS and Vanadium security patches.
 
-[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/latest)
+[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/aosmium-webview-v2.2.0/DresOS-AOSmium-WebView-v2_2_0.zip)
 
 |  |  |
 | --- | --- |
@@ -30,7 +30,7 @@ See [aosmium-webview/README.md](aosmium-webview/README.md) for details.
 
 Systemless microG suite with bundled signature spoofing. Drop in replacement for Google Play Services. Includes GmsCore, Companion (FakeStore), GsfProxy, DroidGuard Helper, and Aurora Store. Runtime Google debloat, security hardening, and a per component bootloop sentinel are built in.
 
-[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/tag/microg-v2.0.0)
+[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/microg-v2.0.0/DresOS-microG-v2_0_0.zip)
 
 |  |  |
 | --- | --- |
