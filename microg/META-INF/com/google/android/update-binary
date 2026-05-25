@@ -1,0 +1,42 @@
+#!/sbin/sh
+##############################################################################
+#  DresOS microG: META-INF/com/google/android/update-binary
+#
+#  Standard Magisk module installer trampoline. Loads Magisk's
+#  util_functions.sh and hands off to customize.sh via Magisk's
+#  install_module entry point. POSIX sh only.
+##############################################################################
+
+##  Magisk passes us three arguments at flash time:
+##    $1 = pipe fd for ui_print
+##    $2 = zip path the user flashed
+##    $3 = boot mode (1 for recovery, 0 for Magisk app)
+umask 022
+
+OUTFD=$2
+ZIPFILE=$3
+
+##  Standard Magisk boilerplate.
+ui_print() {
+    if [ "$BOOTMODE" = "true" ]; then
+        echo "$1"
+    else
+        echo -e "ui_print $1\nui_print" >> /proc/self/fd/"$OUTFD"
+    fi
+}
+
+require_new_magisk() {
+    ui_print "*******************************"
+    ui_print " Please install Magisk v24.0+! "
+    ui_print "*******************************"
+    exit 1
+}
+
+[ ! -f /data/adb/magisk/util_functions.sh ] && require_new_magisk
+. /data/adb/magisk/util_functions.sh
+
+[ -z "$MAGISK_VER_CODE" ] && require_new_magisk
+[ "$MAGISK_VER_CODE" -lt 24000 ] && require_new_magisk
+
+install_module
+exit 0

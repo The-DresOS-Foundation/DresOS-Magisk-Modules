@@ -1,0 +1,4 @@
+apk/*.apk
+*.zip
+*.log
+.zygisk_stash/
