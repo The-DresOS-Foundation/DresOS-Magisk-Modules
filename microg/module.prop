@@ -1,9 +1,9 @@
 id=dresosmicrog
 name=DresOS microG
-version=v2.0.0
-versionCode=20000
+version=v3.0.0
+versionCode=30000
 author=DresOperatingSystems
-description=Systemless microG suite with bundled signature spoofing, prebaked Google debloat, security hardening, and per component bootloop protection. Bundles GmsCore 0.3.7.250932, Companion FakeStore, GsfProxy, DroidGuard Helper, Aurora Store, Aurora Services privileged extension. APKs and matching privapp permissions XML land in the same partition (product priv-app on API 28 plus, system priv-app on API 26 and 27), satisfying Android 11 plus same partition enforcement. Cert identity is verified post boot via cmd package dump reading the X.509 cert SHA 256 PMS itself computes. Debloat runs at runtime via pm disable user, persisted in package restrictions and reversible by uninstall. The bootloop sentinel uses per stage markers so a single failed component is disabled on third strike without taking the whole module offline. ROMs that already ship upstream signed microG are autodetected and only Aurora plus DroidGuard are staged. Works on Android 8 through 16, arm, arm64, x86, x86_64. Coexists with the DresOS AOSmium WebView module. dresoperatingsystems.github.io
+description=Universal systemless microG suite. Ships the officially signed microG GmsCore 0.3.15, Companion and GsfProxy as privileged system apps under product, with a complete privapp-permissions allowlist generated from the bundled manifests, plus Aurora Store, Aurora Services and DroidGuard. Pure file overlay: no Zygisk payload, no Xposed, no runtime PackageManager work, and it never touches other modules, so it coexists with the DresOS AOSmium WebView module and cannot disable it. Signature spoofing is provided by the ROM: because the microG APKs carry the official microG key, any ROM with microG signature spoofing support (LineageOS 2024-02-26 and newer, e OS, CalyxOS, iodeOS, DivestOS and similar) spoofs them automatically once placed in priv-app. Refuses to install on GrapheneOS and where Google Play Services is already present. Android 8 through 16, all ABIs.
 support=https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/issues
 updateJson=https://raw.githubusercontent.com/DresOperatingSystems/DresOS-Magisk-Modules/main/microg/update.json
 minMagisk=24000

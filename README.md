@@ -28,17 +28,18 @@ See [aosmium-webview/README.md](aosmium-webview/README.md) for details.
 
 ### microG (`dresosmicrog`)
 
-Systemless microG suite with bundled signature spoofing. Drop in replacement for Google Play Services. Includes GmsCore, Companion (FakeStore), GsfProxy, DroidGuard Helper, and Aurora Store. Runtime Google debloat, security hardening, and a per component bootloop sentinel are built in.
+Universal systemless microG suite and drop-in replacement for Google Play Services. Ships the officially signed microG GmsCore, Companion (FakeStore) and GsfProxy as privileged system apps, plus Aurora Store, Aurora Services and DroidGuard Helper. It is a pure file overlay with no Zygisk payload, no Xposed, and no boot scripts, so it cannot bootloop the device and coexists cleanly with the AOSmium WebView module. Signature spoofing is provided by the ROM: because the microG APKs carry the official microG key, any ROM that supports microG signature spoofing activates it automatically.
 
-[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/microg-v2.0.0/DresOS-microG-v2_0_0.zip)
+[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/microg-v3.0.0/DresOS-microG-v3_0_0.zip)
 
 |  |  |
 | --- | --- |
-| microG GmsCore | 0.3.7.250932 |
-| Packages | `com.google.android.gms`, `com.android.vending`, `com.google.android.gsf`, `org.microg.gms.droidguard`, `com.aurora.store` |
+| microG GmsCore | 0.3.15.250932 |
+| Packages | `com.google.android.gms`, `com.android.vending`, `com.google.android.gsf`, `org.microg.gms.droidguard`, `com.aurora.store`, `com.aurora.services` |
 | Android | 8.0 through 16+ (API 26 to 36+) |
-| ABI | arm, arm64, x86, x86_64 (Zygisk sigspoof on arm64 and x86_64) |
-| Root | Magisk 24.0+, or KernelSU / APatch with ZygiskNext / ReZygisk |
+| ABI | arm, arm64, x86, x86_64 (multi-ABI microG APK) |
+| Signature spoofing | provided by the ROM for officially signed microG (LineageOS 2024-02-26+, e/OS, CalyxOS, iodeOS, DivestOS, and others) |
+| Root | Magisk 24.0+ |
 
 See [microg/README.md](microg/README.md) for details.
 
@@ -47,7 +48,7 @@ See [microg/README.md](microg/README.md) for details.
 | Module | Status |
 | --- | --- |
 | `dresoswv` AOSmium WebView | v2.2.0 |
-| `dresosmicrog` microG | v2.0.0 |
+| `dresosmicrog` microG | v3.0.0 |
 | `dresosdebloat` Debloater | Planned |
 | `dresosperms` Permissions Hardener | Planned |
 | `dresosafwall` AFWall+ Bootstrap | Planned |

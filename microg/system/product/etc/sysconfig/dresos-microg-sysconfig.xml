@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DresOS microG v3.0.0 sysconfig. Keeps microG alive for push (FCM) and
+     location, and whitelists the Companion store. Additive and safe. -->
+<config>
+    <allow-in-power-save package="com.google.android.gms" />
+    <allow-in-data-usage-save package="com.google.android.gms" />
+    <allow-unthrottled-location package="com.google.android.gms" />
+    <allow-in-power-save-except-idle package="com.android.vending" />
+    <allow-implicit-broadcast action="com.google.android.c2dm.intent.RECEIVE" />
+    <allow-implicit-broadcast action="com.google.android.checkin.CHECKIN_COMPLETE" />
+    <allow-implicit-broadcast action="com.google.gservices.intent.action.GSERVICES_CHANGED" />
+    <allow-implicit-broadcast action="com.google.gservices.intent.action.GSERVICES_OVERRIDE" />
+    <system-user-whitelisted-app package="com.google.android.gms" />
+    <system-user-whitelisted-app package="com.android.vending" />
+</config>

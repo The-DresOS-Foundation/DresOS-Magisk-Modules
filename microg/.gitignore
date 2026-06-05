@@ -1,4 +1,5 @@
 apk/*.apk
 *.zip
 *.log
+build/
 .zygisk_stash/

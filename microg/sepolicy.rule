@@ -1,9 +1,0 @@
-# DresOS microG: sepolicy.rule
-#
-# The Zygisk signature spoof companion runs in the magisk domain. It only
-# reads the bundled Google certificate from the module directory, which
-# the magisk domain can already access by default on stock Magisk. This
-# rule is a defensive belt for hardened forks where the magisk domain has
-# been narrowed. It is intentionally minimal.
-
-allow magisk system_file file { read getattr open }

@@ -2,6 +2,33 @@
 
 All notable changes to the DresOS microG Magisk module are documented in this file.
 
+## v3.0.0 2026-06-04
+
+A ground-up rebuild of how the module delivers signature spoofing. Earlier releases bundled a signature-spoofing layer inside the module. v3.0.0 removes that entirely and instead relies on the ROM to spoof the officially signed microG, which is the approach modern degoogling ROMs are built around. The result is a pure file overlay that is dramatically simpler and cannot bootloop the device or interfere with other modules.
+
+### What changed
+
+- The module now ships the officially signed microG GmsCore 0.3.15.250932 and Companion 0.3.15.40226 (signing key `9bd06727e62796c0130eb6dab39b73157451582cbd138e86c468acc395d14165`). Because the ROM-side spoofing patch on modern ROMs is keyed to the official microG signature, placing these in priv-app is all that is needed for spoofing to activate on a supported ROM.
+- The privileged-permission allowlist is generated directly from the bundled APK manifests, so every privileged permission microG requests is allowlisted. On ROMs with `ro.control_privapp_permissions=enforce` a single missing entry is a guaranteed bootloop, and this closes that gap, including the newer permissions current microG requests.
+- The allowlist XML, the sysconfig file, and the default-permissions file all sit on the same partition as the APKs (`product`), satisfying the Android 11 and newer same-partition rule.
+- DroidGuard and Aurora Store are placed as ordinary apps under `product/app`, where privileged-permission enforcement does not apply.
+
+### Removed
+
+- The bundled Zygisk signature-spoofing hook (`zygisk/*.so`) and all runtime scripts that came with it (`post-fs-data.sh`, `service.sh`, `constants.sh`, `functions.sh`, `sepolicy.rule`). The module no longer runs any code at boot.
+- The runtime PackageManager remediation, the debloat pass, the hardening pass, and the bootloop sentinel. None of them are needed for a pure file overlay, and removing them removes every path by which the module could affect the rest of the system.
+
+### Behaviour on different ROMs
+
+- On ROMs that support microG signature spoofing (LineageOS builds from 2024-02-26 onward, e/OS, CalyxOS, iodeOS, DivestOS and others) the suite works fully, spoofing included, with nothing to toggle.
+- On a ROM with no microG spoofing mechanism, microG still installs and runs, but apps that verify the Google signature need a ROM that supports microG. The module intentionally does not bundle an Xposed spoofing layer.
+
+### Notes
+
+- `action.sh` is now a read-only diagnostic that reports package presence, ROM spoofing support, and coexisting modules. It changes nothing.
+- The module refuses to install on GrapheneOS and where Google Play Services is already present.
+
+
 ## v2.0.0 2026-05-25 (initial public release)
 
 This is the first public release of the DresOS microG Magisk module. The release ships a fully working systemless microG suite (GmsCore, Companion, GsfProxy, DroidGuard) plus the Aurora Store user app.
