@@ -1,3 +1,12 @@
+## Unreleased
+
+- Switched the bundled WebView engine from AOSmium (AXP.OS) to DresOS WebView, our own Chromium build from Cromite, signed with the DresOS release key.
+- The static RRO now whitelists org.dresos.webview with the DresOS signing certificate in config_webview_packages.
+- Updating over the AOSmium build swaps AOSmium out for DresOS WebView in place (same module id), clearing the stale provider selection on boot.
+- arm64 runs the DresOS WebView engine. 32-bit arm (armeabi-v7a) runs a bundled secondary engine so the module still covers 32-bit devices the arm64 build cannot, until a 32-bit DresOS WebView build ships.
+- The static RRO whitelists both engines in config_webview_packages; customize.sh selects the engine for the device ABI at flash time, and service.sh activates whichever one landed.
+- Activation via cmd webviewupdate, the post-fs-data bootloop sentinel, the inert-mode fallback, and the recovery-safe stock WebView restore are unchanged.
+
 # DresOS AOSmium WebView changelog
 
 ## v2.2.0

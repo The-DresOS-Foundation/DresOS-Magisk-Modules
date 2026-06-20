@@ -12,6 +12,6 @@
              android:category="config.webview.providers"/>
 
     <application android:hasCode="false"
-                 android:label="DresOS AOSmium WebView Overlay"
+                 android:label="DresOS WebView Overlay"
                  android:allowBackup="false"/>
 </manifest>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<webviewproviders>
+
+    <webviewprovider
+        packageName="org.dresos.webview"
+        description="DresOS WebView"
+        availableByDefault="true">
+        <signature>MIIFjzCCA3egAwIBAgIILmk0aYAeCuswDQYJKoZIhvcNAQEMBQAwdTEQMA4GA1UEBhMHVW5rbm93bjEQMA4GA1UECBMHVW5rbm93bjEQMA4GA1UEBxMHVW5rbm93bjEPMA0GA1UEChMGRHJlc09TMR0wGwYDVQQLExREcmVzT3BlcmF0aW5nU3lzdGVtczENMAsGA1UEAxMEZHJlczAgFw0yNjA2MDcxNDIzMzdaGA8yMDUzMTAyMzE0MjMzN1owdTEQMA4GA1UEBhMHVW5rbm93bjEQMA4GA1UECBMHVW5rbm93bjEQMA4GA1UEBxMHVW5rbm93bjEPMA0GA1UEChMGRHJlc09TMR0wGwYDVQQLExREcmVzT3BlcmF0aW5nU3lzdGVtczENMAsGA1UEAxMEZHJlczCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBANsYejLnl0hsnAuYIK0q+pEg30wHy1qUzjqjMTCjmyJqToW4Goa3dSOjqImbyN5R4+E5y8TyMYz/dYmuIKWy1pzmzX11GDDc+y+z/iytZkn6Vq8h0q9ole/Ok2pZWHKMwf7ZrrAcVN/sOVOaSPHP8GPN1i8achgicvqd2G/ZBaN5+uKPLD0zaFsL0BxLTCVMZ/iJ6y7N7/toAQcCxH0ZrpXetxgfWAHB5sK45Qoi3rwIwhlo4FFCGWUQv87KUU1lpCKfaOS3GG9tDgAZWkEBauTZ9Z3f3Tw3u/QY50k1W1mThw4cEzViyzaCsM0qsebSp4/FsixCBbyP3POzun7yb174U2dNjtwQdExOPUQxF3Z8MzUdDeZ0w4WBofR5+uqXV0HAyNdBRuoa1ZP7iVbS2XtV6RYDg0o+GjvZxWXSEyBNh8ktgvSz05XZzBumRCYXTrrNYvUNkT9+FO0LvppDZB4jkiLU2BRnwX/lwZewTMf3HymtCaypgmqtv70LnUO55xeNX0qnvOcRu/GYB7nBPkBO+wiM93+uG05mE1ZYWAnrMwxZ1aAKxVOTB7OCAgR/YHrVrk2L4bvG8eu/pemXTXHeKE9jEUVL/kZhNMpufTM9qyua+9znRNwoAE6/m24rKTQynnKRTPCYspST2l46X1pgX2QxrBz3eFj5sFwfbfOtAgMBAAGjITAfMB0GA1UdDgQWBBS7m2vrtL+5AAN41K57enpxVILaJjANBgkqhkiG9w0BAQwFAAOCAgEAQ/TFyKHVZsCBqidqN6Vcxf3rZ34YnwYMb4ystcE884IGZNobqTze3PUC9QFUfoDSvYEHyF3IHK1iR8ABffz/0n8iDurSwC4CMW6G6ZkLx1uc4SQQ1fy74bBdVk4Fiv/da0+JyZoYq5Wda0MPjb5GYRCnVagfwdXVBd1QigZuuVlw6Op3U2g8KFkwRgwWPtsfEbSi8FdgJEFSdyc+M9gnES+gTMzp17FCHLPLXHsMOwTAMn7DmJYmHWbv//vyZ67lN4Ojuaa2JQAv8ErgaGtb3CFXF0KKWfWmKZhBNF3xsG+p1SrY4C/Au6Gx4juoEmIwPUR9zWHkSmIaVvuiFzybo0IGU0NFXZMA8wJ/2ejBgKGWf3+6Z3t1P8W0KF5UzpRzGj6soKq+i90Pngg26WqGhkPLi6tmLEzk89KW9Fs7p//MnR9fpGXQzIPVDY+3++iDACOL1UOY4A5SgYctmTvPl23QI+5MDJhII4eofFcxm4TJ4AHFnH+lV92vu3N/+b6i4xH7kA0rzr6gZe8y6pO+vsEjimHboPb8VpTY9lNaafXr/ZasAjsaAPu09/iGiHNY/HPc7jf6ukTJtKhP985my4y2pJ1gtS1AFRKH78uPUi71lF+tTzXliX0MpYb6ymPRNKV/x/OAepz9MvBGnyQdL5fzUFgmCTYf9qJ6OplZgGg=</signature>
+    </webviewprovider>
+
+    <webviewprovider
+        packageName="org.axpos.aosmium_wv"
+        description="DresOS WebView 32-bit engine"
+        availableByDefault="true">
+        <signature>MIICajCCAcugAwIBAgIJAKKFzP6qpdgWMAoGCCqGSM49BAMEMGUxCzAJBgNVBAYTAkRFMQwwCgYDVQQIEwNOL0ExDDAKBgNVBAcTA04vQTEPMA0GA1UEChMGQVhQLk9TMQ8wDQYDVQQLEwZBWFAuT1MxGDAWBgNVBAMTD0FQSyBTSUdOSU5HIEtFWTAeFw0yNTAxMDgxNzAxMjNaFw0zNTAxMDYxNzAxMjNaMGUxCzAJBgNVBAYTAkRFMQwwCgYDVQQIEwNOL0ExDDAKBgNVBAcTA04vQTEPMA0GA1UEChMGQVhQLk9TMQ8wDQYDVQQLEwZBWFAuT1MxGDAWBgNVBAMTD0FQSyBTSUdOSU5HIEtFWTCBmzAQBgcqhkjOPQIBBgUrgQQAIwOBhgAEAOhJfTYKhxYAs391+zrDZVKxtMnKkDvoFQfUHrl/HLCwK+c9X9kSHXaG7DcEzBPtEc7105CUyhk9YtN5GNCphnSqAa7fG5v4nngeTOFplZUq295outNAjT0NlWFWuA+3ei3JV43AzQGimH5EQ/UD9CpFemLoAQpUlOMU5tr5BWzAyUsqoyEwHzAdBgNVHQ4EFgQUpv+2CCk3423DCp5oTA5bZmxYX9owCgYIKoZIzj0EAwQDgYwAMIGIAkIBrPhoYHbix9fESALKBCQvW2Z4RULHJs7CwFSEc71rNN30QWHA5W8sRkfUgZJzFGcFQmhf8nHUISMWpRFm0kdszkUCQgHhWodLT3JmqiR1Eg5fU5oo4cdijJft50slR1u7gTiTamY5SmuohJvLO51LhmgnRN1uCE69yYloqvfvoIoaSBdmyA==</signature>
+    </webviewprovider>
+
+    <webviewprovider
+        packageName="com.google.android.webview"
+        description="Google WebView fallback"
+        availableByDefault="true"
+        isFallback="true">
+    </webviewprovider>
+
+    <webviewprovider
+        packageName="com.android.webview"
+        description="AOSP WebView fallback"
+        availableByDefault="true">
+    </webviewprovider>
+
+</webviewproviders>

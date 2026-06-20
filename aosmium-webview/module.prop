@@ -1,7 +1,0 @@
-id=dresoswv
-name=DresOS AOSmium WebView
-version=v2.2.0
-versionCode=220
-author=DresOperatingSystems
-description=Systemless replacement of Android System WebView with AOSmium WebView Chromium 147.0.7727.49 from AXP.OS. Supports Android 10 through 16 and newer on arm and arm64. Activates via static RRO plus bind mount, then disables the stock WebView after AOSmium is confirmed active. Bootloop sentinel, inert mode fallback, and recovery safe stock WebView restore. Project site dresoperatingsystems.github.io
-support=https://xdaforums.com/t/dresos-the-android-defensive-security-system.4787891

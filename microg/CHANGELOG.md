@@ -1,3 +1,9 @@
+## v3.0.1
+
+- Added a weekly GitHub Actions pipeline that pulls the latest officially signed microG core (GmsCore, Companion, GsfProxy) from the official microG F-Droid repo and auto-bumps the module when upstream changes.
+- Updated the module description: microG now coexists with the DresOS WebView module (the AOSmium WebView module it previously named has been replaced by DresOS WebView).
+- No change to the bundled microG APKs or the install logic. Maintenance and tooling release.
+
 # DresOS microG Changelog
 
 All notable changes to the DresOS microG Magisk module are documented in this file.
