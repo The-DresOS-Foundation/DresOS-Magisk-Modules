@@ -10,7 +10,7 @@ Part of the [DresOS Android Defensive Security System](https://github.com/DresOp
 
 ## Modules
 
-### AOSmium WebView (`dresoswv`)
+### WebView (`dresoswv`)
 
 Replaces Android System WebView with [AOSmium](https://axpos.org/), a Chromium fork hardened with GrapheneOS and Vanadium security patches.
 
