@@ -1,6 +1,6 @@
 #!/system/bin/sh
 ##############################################################################
-#  DresOS microG  v3.1.0  action.sh   (READ-ONLY diagnostics)
+#  DresOS microG  v3.1.1  action.sh   (READ-ONLY diagnostics)
 #
 #  Tapping Action in the Magisk app runs this. It only READS state and prints
 #  a report. It never installs modules, never deletes anything, and never
@@ -11,13 +11,13 @@ MODDIR=${0%/*}
 GP() { getprop "$1" 2>/dev/null; }
 
 FLAVOR="microg-key"; [ -f "$MODDIR/flavor" ] && FLAVOR=$(cat "$MODDIR/flavor" 2>/dev/null)
-echo "DresOS microG  v3.1.0  status"
+echo "DresOS microG  v3.1.1  status"
 echo "============================="
 echo "Device   : $(GP ro.product.manufacturer) $(GP ro.product.model) ($(GP ro.product.device))"
 echo "Android  : $(GP ro.build.version.release)  API $(GP ro.build.version.sdk)  ABI $(GP ro.product.cpu.abi)"
 echo "ROM      : LineageOS $(GP ro.lineage.build.version)$(GP ro.calyxos.version)$(GP ro.iode.version)$(GP ro.e.version)"
 echo "privapp  : ro.control_privapp_permissions=$(GP ro.control_privapp_permissions)"
-echo "flavor   : $FLAVOR  ($([ "$FLAVOR" = google-signed ] && echo 'Google-signed, no spoofing needed; do not update microG from F-Droid' || echo 'official microG key; needs ROM spoofing'))"
+echo "signature: official microG key; needs system signature spoofing (a spoofing ROM, or LSPosed + FakeGApps on Android 15 and below)"
 echo
 
 check_pkg() {

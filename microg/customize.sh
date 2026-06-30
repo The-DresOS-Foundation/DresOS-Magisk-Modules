@@ -1,6 +1,6 @@
 #!/system/bin/sh
 ##############################################################################
-#  DresOS microG  v3.1.0  customize.sh
+#  DresOS microG  v3.1.1  customize.sh
 #
 #  Mostly a file overlay: customize.sh validates the environment, picks the
 #  partition, masks any real Google Play Services so microG can take its
@@ -35,23 +35,12 @@ print_banner() {
 
 GP() { getprop "$1" 2>/dev/null; }
 
-# Build flavor: "google-signed" (core APKs carry Google's certificate; no ROM
-# spoofing needed, works on stock) or "microg-key" (officially signed microG;
-# needs a spoofing-capable ROM). Written by build-module.sh.
-FLAVOR="microg-key"
-[ -f "$MODPATH/flavor" ] && FLAVOR=$(cat "$MODPATH/flavor" 2>/dev/null)
-
 print_banner
 echo " "
 echo "==============================================="
-echo "  DresOS microG  v3.1.0"
-if [ "$FLAVOR" = "google-signed" ]; then
-    echo "  Stock flavor: microG signed with Google's"
-    echo "  certificate. No signature spoofing needed."
-else
-    echo "  Standard flavor: officially signed microG"
-    echo "  for ROMs with microG signature spoofing."
-fi
+echo "  DresOS microG  v3.1.1"
+echo "  Officially signed microG for ROMs with"
+echo "  microG signature spoofing (system-provided)."
 echo "  Systemless overlay with bootloop watchdog"
 echo "==============================================="
 echo " "
@@ -163,48 +152,43 @@ else
 fi
 echo " "
 
-##  7. Report the signature situation honestly, per flavor.
-if [ "$FLAVOR" = "google-signed" ]; then
-    echo "  Signature mode      : Google certificate carried by the APKs"
+##  7. Report the signature situation and, if needed, how to add spoofing.
+SPOOF="unknown"
+if GP ro.calyxos.version | grep -q . ; then SPOOF="yes (CalyxOS)"; fi
+if GP ro.iode.version    | grep -q . ; then SPOOF="yes (iodeOS)"; fi
+if GP ro.e.version       | grep -q . ; then SPOOF="yes (e/OS)"; fi
+if GP ro.divest.version  | grep -q . ; then SPOOF="yes (DivestOS)"; fi
+if [ "$SPOOF" = "unknown" ] && GP ro.lineage.version | grep -q . ; then
+    SPOOF="likely (LineageOS) if this build is 2024-02-26 or newer AND a userdebug build"
+fi
+echo "  ROM signature spoof : $SPOOF"
+if echo "$SPOOF" | grep -qi unknown; then
     echo " "
-    echo "  These microG APKs are signed with Google's own certificate, so"
-    echo "  signature spoofing is NOT required on any ROM, including stock"
-    echo "  firmware. Apps that verify the Google signature will see it."
+    echo "  This ROM is not on the built-in signature-spoofing list (most stock"
+    echo "  OEM firmware and standard LineageOS are not). microG needs spoofing"
+    echo "  for signature-checking apps to work. To add it:"
     echo " "
-    echo "  Two things to know about this flavor:"
-    echo "   - microG here works only as a system app (that is how it is"
-    echo "     installed). Do NOT install a microG update from F-Droid over it:"
-    echo "     it would be rejected. Update by flashing a rebuilt module."
-    echo "   - After reboot, open microG Settings, Self-Check and confirm"
-    echo "     'microG Services has correct signature' is green."
-    echo " "
-    echo "  The bootloop watchdog will auto-disable this module if the device"
-    echo "  fails to finish booting."
-else
-    SPOOF="unknown"
-    if GP ro.calyxos.version | grep -q . ; then SPOOF="yes (CalyxOS)"; fi
-    if GP ro.iode.version    | grep -q . ; then SPOOF="yes (iodeOS)"; fi
-    if GP ro.e.version       | grep -q . ; then SPOOF="yes (e/OS)"; fi
-    if GP ro.divest.version  | grep -q . ; then SPOOF="yes (DivestOS)"; fi
-    if [ "$SPOOF" = "unknown" ] && GP ro.lineage.version | grep -q . ; then
-        SPOOF="likely (LineageOS) if this build is 2024-02-26 or newer AND is a userdebug build"
+    if [ "${API:-0}" -ge 36 ]; then
+        echo "   Your Android version is 16 (API $API). The clean spoofing tools do"
+        echo "   not support 16 yet: FakeGApps caps at Android 15 and the"
+        echo "   services.jar patchers fail on 16. For full microG on 16 today, use"
+        echo "   a ROM with built-in microG spoofing (LineageOS for microG, e/OS,"
+        echo "   CalyxOS, iodeOS, DivestOS). On Android 15 or below, install LSPosed"
+        echo "   (JingMatrix fork) + FakeGApps to enable spoofing."
+    else
+        echo "   Android 15 and below:"
+        echo "    1. Enable Zygisk in Magisk settings."
+        echo "    2. Install LSPosed (JingMatrix fork) as a Magisk module, reboot."
+        echo "    3. Install the FakeGApps APK, open LSPosed, enable FakeGApps,"
+        echo "       then reboot."
+        echo "   On Android 16, FakeGApps is not ready yet; a ROM with built-in"
+        echo "   microG spoofing is needed there for now."
     fi
-    echo "  ROM signature spoof : $SPOOF"
-    if echo "$SPOOF" | grep -qi unknown; then
-        echo " "
-        echo "  IMPORTANT: This ROM is not on the known signature-spoofing list,"
-        echo "  which includes most stock OEM firmware. This STANDARD flavor needs"
-        echo "  ROM spoofing, so signature-checking apps will NOT work here. For"
-        echo "  stock firmware, flash the STOCK flavor instead (its APKs carry"
-        echo "  Google's certificate and need no spoofing). This module ships no"
-        echo "  Xposed/Zygisk spoofing layer (an earlier version did and it"
-        echo "  bootlooped devices)."
-        echo " "
-        echo "  After reboot, confirm in microG Settings, Self-Check: if 'System"
-        echo "  spoofs signature' is red, this ROM cannot spoof and the above"
-        echo "  applies. The bootloop watchdog will auto-disable the module if the"
-        echo "  device fails to finish booting."
-    fi
+    echo " "
+    echo "  This module ships no Xposed/Zygisk spoofing layer of its own (an"
+    echo "  earlier version did and it bootlooped devices). After reboot, microG"
+    echo "  Settings > Self-Check: 'System spoofs signature' must be green. If it"
+    echo "  is red, spoofing is not active here yet."
 fi
 echo " "
 

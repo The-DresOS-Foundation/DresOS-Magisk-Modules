@@ -1,3 +1,17 @@
+## v3.1.1
+
+Removes the non-working Google-signed "stock" flavor and replaces it with honest, version-aware signature-spoofing guidance. No change to the microG binaries.
+
+### Removed: Google-signed stock flavor
+
+- The v3.1.0 stock flavor used apksigcopier to graft Google's certificate onto microG's GmsCore, Companion and GsfProxy. This cannot produce an installable APK on modern Android: a signature copied from Google's APK is computed over Google's bytes, not microG's, and without Google's private key you cannot mint a valid one over microG's bytes, so Android 7+ fails the v2/v3 digest check at install. apksigcopier itself refused the operation ("Unexpected metadata") because the target microG APK is already signed. make-google-signed.sh, the GOOGLE_SIGNED build path and the flavor branching are gone.
+
+### Changed: stock-ROM signature-spoofing guidance
+
+- The installer and README now point stock-ROM users at the mechanism that actually works: signature spoofing. On Android 15 and below, LSPosed (JingMatrix fork) plus FakeGApps. The installer detects the Android version and, on Android 16, states plainly that FakeGApps does not support 16 yet and the services.jar patchers fail on 16, so a ROM with built-in microG spoofing is currently required there for full functionality.
+- The module still bundles no spoofing layer of its own, deliberately, since the Zygisk/Xposed layer was the source of earlier boot loops. Spoofing is left to LSPosed/FakeGApps or the ROM.
+- The officially signed microG (standard) path, the systemless masking, the regenerated privapp-permissions allowlist and the bootloop watchdog are all unchanged.
+
 ## v3.1.0
 
 Adds an optional stock flavor that makes microG work on stock firmware with no signature spoofing at all, by signing the bundled microG with Google's own certificate. The standard flavor (officially signed microG for spoofing-capable ROMs) is unchanged and remains the default.

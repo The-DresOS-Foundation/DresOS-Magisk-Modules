@@ -52,45 +52,43 @@ until you move to a ROM with microG spoofing support. The installer states
 this plainly and the microG Self-Check confirms it (the "System spoofs
 signature" line will be red on such ROMs).
 
-## Two flavors: standard and stock
+## Stock ROMs: adding signature spoofing
 
-This module builds in two flavors. You flash whichever fits your device.
+There is one flavor: the officially signed microG described above. On a ROM that
+already spoofs the microG signature (the list above), it just works. On a stock
+ROM or a plain LineageOS build that does not spoof, microG installs and masks the
+Google apps, but signature-checking apps stay broken until you add spoofing.
 
-Standard (officially signed microG) is the default and is meant for ROMs that
-support microG signature spoofing. microG keeps its real signature, so it can
-be updated from F-Droid, and the ROM spoofs the Google signature for it. This
-is the flavor the auto-update pipeline publishes.
+On Android 15 and below, add it with LSPosed and FakeGApps:
 
-Stock (Google-signed) is for stock firmware and for any ROM where you would
-rather not rely on spoofing. The bundled microG GmsCore, Companion and
-GsfProxy are signed with Google's own certificate using apksigcopier, so the
-system reports them as Google-signed and no signature spoofing is needed
-anywhere. The trade-off is inherent to this technique: the copied signature is
-valid against Google's bytes, not microG's, so these APKs work only as system
-apps (they cannot be installed as user apps), and microG can no longer be
-updated from F-Droid. You update by flashing a rebuilt module.
+1. Enable Zygisk in Magisk settings.
+2. Install LSPosed (the JingMatrix fork, which covers Android 8.1 through 16) as a
+   Magisk module and reboot.
+3. Install the FakeGApps APK, open LSPosed, enable FakeGApps, and reboot.
+4. In microG Settings, Self-Check, confirm "System spoofs signature" is green.
 
-Building the stock flavor (you supply a genuine Google Play Services APK as the
-signature donor):
+On Android 16 this path does not work yet: FakeGApps currently caps at Android 15,
+and the services.jar patchers (Haruka, Haystack, NanoDroid) fail on 16. Until that
+lands, the only way to get full microG on stock Android 16 is a ROM with built-in
+microG spoofing (LineageOS for microG, e/OS, CalyxOS, iodeOS, DivestOS).
 
-```
-cd microg
-bash refresh-upstream.sh                       # fetch the microG core APKs
-mkdir -p donors && cp /path/to/PlayServices.apk donors/donor.apk
-bash make-google-signed.sh                     # transplant Google's signature
-GOOGLE_SIGNED=1 bash build-module.sh           # -> DresOS-microG-vX_Y_Z-stock.zip
-```
+This module deliberately bundles no spoofing layer of its own: an earlier version
+did and it boot-looped devices, so spoofing is left to LSPosed/FakeGApps or the
+ROM, where it is maintained and far safer.
 
-com.google.android.gms, com.android.vending and com.google.android.gsf share
-the same Google certificate, so one Play Services donor covers all three. The
-build verifies every output actually carries Google's certificate before it
-will package the zip.
+A previous build shipped a "Google-signed" stock flavor that grafted Google's
+certificate onto microG with apksigcopier. It was removed in v3.1.1: a signature
+copied from Google's APK does not verify against microG's different bytes (doing
+that needs Google's private key, which only Google holds), so it failed to install
+on modern Android. Signature spoofing is the correct mechanism, and it is the one
+described above.
 
 ## Install
 
 1. A degoogled ROM is ideal. If Google Play Services is present, the
    module masks it for you (reversibly); you do not have to remove it by
-   hand. On stock firmware without signature spoofing, see the note below.
+   hand. On a stock ROM without signature spoofing, see "Stock ROMs: adding
+   signature spoofing" above.
 2. In the Magisk app: Modules, Install from storage, pick the zip.
 3. Reboot. The first boot can take a few minutes while PackageManager
    scans GmsCore. Do not force a reboot during it.

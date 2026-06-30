@@ -29,19 +29,16 @@ ZIPNAME="DresOS-microG-${VER//./_}.zip"
 BUILD="build"
 PERMS_XML="system/product/etc/permissions/privapp-permissions-dresos-microg.xml"
 
-# Flavor: default "microg-key" (officially signed microG for spoofing-capable
-# ROMs). Set GOOGLE_SIGNED=1 to build the "google-signed" stock flavor, whose
-# core APKs carry Google's certificate (works on stock and any ROM, no spoofing)
-# and come from apk-google-signed/ (produced by make-google-signed.sh).
-GOOGLE_CERT_SHA256="f0fd6c5b410f25cb25c3b53346c8972fae30f8ee7411df910480ad6b2d60db83"
+# The Google-signed "stock" flavor was removed in v3.1.1: grafting Google's
+# certificate onto microG cannot make a verifiable APK without Google's private
+# key, so it failed to install on modern Android. microG on stock now relies on
+# signature spoofing (LSPosed + FakeGApps, or a spoofing-capable ROM); see README.
 if [ "${GOOGLE_SIGNED:-}" = "1" ]; then
-    FLAVOR="google-signed"
-    COREDIR="apk-google-signed"
-    ZIPNAME="DresOS-microG-${VER//./_}-stock.zip"
-else
-    FLAVOR="microg-key"
-    COREDIR="apk"
+    echo "  note: the GOOGLE_SIGNED stock flavor was removed in v3.1.1."
+    echo "        Building the standard spoofing flavor. See README for stock setup."
 fi
+FLAVOR="microg-key"
+COREDIR="apk"
 
 req() { command -v "$1" >/dev/null 2>&1 || { echo "! need '$1' on PATH"; exit 1; }; }
 req unzip; req zip; req openssl; req find
@@ -58,58 +55,27 @@ apk_cert_sha256() {
     rm -rf "$tmp"
 }
 
-# v2/v3 signing block cert reader (Google-signed APKs have no v1 signature).
-apk_cert_sha256_v23() {
-    python3 - "$1" <<'PY' 2>/dev/null
-import sys, hashlib
-try:
-    from loguru import logger; logger.remove()
-except Exception: pass
-import logging; logging.disable(logging.CRITICAL)
-try:
-    from androguard.core.apk import APK
-except Exception:
-    print(""); sys.exit(0)
-a=APK(sys.argv[1]); certs=[]
-for fn in ("get_certificates_der_v3","get_certificates_der_v2"):
-    try: certs += getattr(a,fn)() or []
-    except Exception: pass
-print(next(iter({hashlib.sha256(c).hexdigest() for c in certs}), ""))
-PY
-}
+read_cert() { apk_cert_sha256 "$1"; }
 
-read_cert() {  # picks the reader: v1 for microg-key, v2/v3 for google-signed
-    if [ "$FLAVOR" = google-signed ]; then apk_cert_sha256_v23 "$1"; else apk_cert_sha256 "$1"; fi
-}
-
-echo "Building DresOS microG $VER  (flavor: $FLAVOR)"
+echo "Building DresOS microG $VER"
 
 # 1. required core APKs present?
 for a in GmsCore Companion GsfProxy; do
-    [ -f "$COREDIR/$a.apk" ] || { echo "! missing $COREDIR/$a.apk"; \
-        [ "$FLAVOR" = google-signed ] && echo "  run make-google-signed.sh first" || echo "  see apk/README.txt"; exit 1; }
+    [ -f "$COREDIR/$a.apk" ] || { echo "! missing $COREDIR/$a.apk"; echo "  run refresh-upstream.sh first (see apk/README.txt)"; exit 1; }
 done
 
-# 2. verify the core trio's signing certificate matches the flavor.
-if [ "$FLAVOR" = google-signed ]; then
-    EXPECT="$GOOGLE_CERT_SHA256"; LABEL="Google certificate"
-else
-    EXPECT="$OFFICIAL_MICROG_KEY"; LABEL="official microG key"
-fi
+# 2. verify the core trio is signed with the official microG key, so ROM
+#    signature spoofing will activate for it.
 for a in GmsCore Companion GsfProxy; do
     fp=$(read_cert "$COREDIR/$a.apk")
-    if [ "$fp" != "$EXPECT" ]; then
-        echo "! $COREDIR/$a.apk is NOT signed with the $LABEL."
-        echo "!   expected: $EXPECT"
+    if [ "$fp" != "$OFFICIAL_MICROG_KEY" ]; then
+        echo "! $COREDIR/$a.apk is NOT signed with the official microG key."
+        echo "!   expected: $OFFICIAL_MICROG_KEY"
         echo "!   found:    ${fp:-<none>}"
-        if [ "$FLAVOR" = google-signed ]; then
-            echo "! Re-run make-google-signed.sh with a genuine Google donor APK. Aborting."
-        else
-            echo "! ROM signature spoofing will not activate with this APK. Aborting."
-        fi
+        echo "! ROM signature spoofing will not activate with this APK. Aborting."
         exit 1
     fi
-    echo "  verified $LABEL: $a.apk"
+    echo "  verified official microG key: $a.apk"
 done
 
 # 3. regenerate the privileged-permission allowlist from the real manifests,
