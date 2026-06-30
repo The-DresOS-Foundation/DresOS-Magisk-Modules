@@ -1,3 +1,38 @@
+## v3.1.0
+
+Adds an optional stock flavor that makes microG work on stock firmware with no signature spoofing at all, by signing the bundled microG with Google's own certificate. The standard flavor (officially signed microG for spoofing-capable ROMs) is unchanged and remains the default.
+
+### Added: stock flavor (Google-signed)
+
+- New make-google-signed.sh transplants Google's signing certificate onto the microG GmsCore, Companion and GsfProxy APKs using apksigcopier, then verifies each output actually carries Google's certificate (SHA-256 f0fd6c5b...). It borrows microG's own APK-signing-block offset before patching, so the output APKs stay their normal size instead of being padded up to the donor's size, which was the known pitfall of the naive approach.
+- build-module.sh gains GOOGLE_SIGNED=1, which builds DresOS-microG-v3_1_0-stock.zip from the Google-signed APKs and writes a flavor marker into the module. customize.sh and action.sh read that marker: the stock flavor states plainly that no spoofing is needed and that microG must not be updated from F-Droid in this mode, while the standard flavor keeps its existing spoofing guidance.
+- You provide a genuine Google Play Services APK as the signature donor (com.google.android.gms, com.android.vending and com.google.android.gsf share the same Google certificate, so one donor covers all three; per-app donors are also supported).
+
+### How the stock flavor behaves
+
+- Because the copied signature is valid against Google's bytes and not microG's, the Google-signed APKs verify only as system or privileged apps, which is exactly how this module installs them. They cannot be installed as user apps, and microG can no longer be updated from F-Droid: update by flashing a rebuilt module. This is the same trade-off every no-signature-spoofing approach makes, and it is the only way to run microG on stock Android without an Xposed or Zygisk spoofing layer.
+- The real-Google-Play-Services masking from v3.0.2 still applies, so the stock flavor can take over the Google package names on stock firmware.
+- apksigcopier was archived in May 2025, so a future APK Signature Scheme v4 could require revisiting this path. Confirm on-device via microG Settings, Self-Check that "microG Services has correct signature" is green.
+
+## v3.0.2
+
+Fixes the three problems reported on the XDA thread and GitHub: the stock-Android install abort, the lack of bootloop recovery, and the broken auto-update pipeline. No change to the microG binaries themselves.
+
+### Fixed
+
+- Stock firmware no longer aborts with "Remove Google Play Services / GApps first, then reflash", which asked for something impossible on stock. When real Google Play Services is present the module now masks it systemlessly (an empty-directory .replace marker over the stock GmsCore, Play Store, and Services Framework) so microG can take over those package names. It is fully reversible: removing the module restores the stock Google apps.
+- The auto-update pipeline was 404ing on every run because it tried to download the standalone DroidGuard Helper, which microG removed from its repo after integrating DroidGuard into GmsCore. DroidGuard is no longer fetched or bundled. The microG core is now resolved purely by parsing the repo index, so a new upstream versionCode can never 404 the build again, and downloads are validated as real APKs (ZIP magic) so an HTML error page can never be saved as an .apk.
+- Aurora Store and Aurora Services are now fetched by index from IzzyOnDroid and are optional: if that repo is briefly unavailable the core microG module still builds.
+
+### Added
+
+- A minimal bootloop watchdog (post-fs-data.sh + service.sh). Each boot raises a flag that is cleared only after the system fully boots; if two boots in a row never complete, the module disables only itself so the device recovers, and writes a reason file the Action button shows. This is the one piece of boot-time code in the module: no Zygisk, no PackageManager work, no changes to other modules. It is the safety net for the clean-LineageOS bootloop class that a post-fs-data-only sentinel could not catch, since a system_server crash happens after post-fs-data completes.
+- The privileged-permission allowlist is now regenerated from the actual bundled GmsCore and Companion manifests at build time and merged with the committed baseline, so every permission the APKs request is always allowlisted. This closes the path by which a future microG update that adds a new privileged permission could silently reintroduce a bootloop on ROMs with ro.control_privapp_permissions=enforce.
+
+### Still true, and stated plainly in the installer
+
+- Signature spoofing comes from the ROM. On a ROM with microG spoofing support the suite works fully. On stock Android, which has no signature spoofing, microG installs and runs but apps that verify the Google signature will not work, because this module deliberately ships no Xposed/Zygisk spoofing layer (the layer that bootlooped devices in v2.0.0). The installer now states this directly and points to microG Self-Check to confirm.
+
 ## v3.0.1
 
 - Added a weekly GitHub Actions pipeline that pulls the latest officially signed microG core (GmsCore, Companion, GsfProxy) from the official microG F-Droid repo and auto-bumps the module when upstream changes.
