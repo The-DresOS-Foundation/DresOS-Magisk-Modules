@@ -28,14 +28,14 @@ See [webview/README.md](https://github.com/DresOperatingSystems/DresOS-Magisk-Mo
 
 ### microG (`dresosmicrog`)
 
-Universal systemless microG suite and drop-in replacement for Google Play Services. Ships the officially signed microG GmsCore, Companion (FakeStore) and GsfProxy as privileged system apps, plus Aurora Store, Aurora Services and DroidGuard Helper. It is a pure file overlay with no Zygisk payload, no Xposed, and no boot scripts, so it cannot bootloop the device and coexists cleanly with the AOSmium WebView module. Signature spoofing is provided by the ROM: because the microG APKs carry the official microG key, any ROM that supports microG signature spoofing activates it automatically.
+Universal systemless microG suite and drop-in replacement for Google Play Services. Ships the officially signed microG GmsCore, Companion (FakeStore) and GsfProxy as privileged system apps, plus Aurora Store along with Aurora Services. It is a pure file overlay with no Zygisk payload, no Xposed, and no boot scripts, so it cannot bootloop the device and coexists cleanly with the DresOS WebView module. Signature spoofing is provided by the ROM: because the microG APKs carry the official microG key, any ROM that supports microG signature spoofing activates it automatically.
 
-[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/microg-v3.0.1/DresOS-microG-v3_0_1.zip)
+[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/microg-v3.1.1/DresOS-microG-v3_1_1.zip)
 
 |  |  |
 | --- | --- |
 | microG GmsCore | 0.3.15.250932 |
-| Packages | `com.google.android.gms`, `com.android.vending`, `com.google.android.gsf`, `org.microg.gms.droidguard`, `com.aurora.store`, `com.aurora.services` |
+| Packages | `com.google.android.gms`, `com.android.vending`, `com.google.android.gsf`, `com.aurora.store`, `com.aurora.services` |
 | Android | 8.0 through 16+ (API 26 to 36+) |
 | ABI | arm, arm64, x86, x86_64 (multi-ABI microG APK) |
 | Signature spoofing | provided by the ROM for officially signed microG (LineageOS 2024-02-26+, e/OS, CalyxOS, iodeOS, DivestOS, and others) |
