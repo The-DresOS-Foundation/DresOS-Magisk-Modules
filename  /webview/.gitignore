@@ -1,5 +1,0 @@
-apks/
-overlay/release.keystore
-overlay/build/
-overlay/*.apk
-*.zip

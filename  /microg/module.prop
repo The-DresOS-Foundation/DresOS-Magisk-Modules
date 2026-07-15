@@ -1,9 +1,0 @@
-id=dresosmicrog
-name=DresOS microG
-version=v3.1.1
-versionCode=30101
-author=DresOperatingSystems
-description=Universal systemless microG suite. Ships the officially signed microG GmsCore, Companion and GsfProxy as privileged system apps under product, with a privapp-permissions allowlist regenerated from the bundled manifests at build time so a microG update can never reintroduce a permission-mismatch bootloop, plus Aurora Store and Aurora Services when available. DroidGuard is built into GmsCore now, so no separate DroidGuard app is shipped. If real Google Play Services is present it is masked systemlessly (reversible) so microG can take over the package names, which fixes installs on stock firmware that previously aborted. A minimal bootloop watchdog auto-disables only this module if a boot never completes. No Zygisk payload, no Xposed, and it never touches other modules, so it coexists with the DresOS WebView module. Signature spoofing is provided by the system: the microG APKs carry the official microG key, so any ROM with microG signature spoofing (LineageOS 2024-02-26+, e OS, CalyxOS, iodeOS, DivestOS and similar) spoofs them automatically. On a stock ROM without spoofing, microG installs but signature-checking apps will not work until you add spoofing with LSPosed (JingMatrix fork) plus FakeGApps on Android 15 or below; on Android 16 the spoofing tooling is not ready yet, so a ROM with built-in microG spoofing is needed for full functionality. The installer detects this and says exactly what to do. Refuses to install on GrapheneOS. Android 8 through 16, all ABIs.
-support=https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/issues
-updateJson=https://raw.githubusercontent.com/DresOperatingSystems/DresOS-Magisk-Modules/main/microg/update.json
-minMagisk=24000

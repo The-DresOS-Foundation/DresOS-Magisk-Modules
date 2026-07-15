@@ -1,5 +1,0 @@
-# Track the bundled FOSS APKs (microG core + Aurora) with Git LFS.
-# These are Apache-2.0 and safe to redistribute. The proprietary Google Play
-# Services donor used only for the stock flavor lives in microg/donors/ and is
-# gitignored - never LFS-track or commit it.
-microg/apk/*.apk filter=lfs diff=lfs merge=lfs -text
