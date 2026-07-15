@@ -1,0 +1,8 @@
+id=dresoswv
+name=DresOS WebView
+version=v2.2.0
+versionCode=220
+author=DresOperatingSystems
+description=Systemless replacement of Android System WebView with DresOS WebView, a Chromium engine built from Cromite with Google services and telemetry stripped and Cromite security hardening throughout. Android 10 through 16 and newer, arm64. Installs the signed APK in the systemless tree, ships a static RRO that whitelists it in config_webview_packages, activates it via cmd webviewupdate after boot, then disables the stock WebView once DresOS WebView is confirmed active. Bootloop sentinel, inert mode fallback, recovery safe stock WebView restore. Project site dresoperatingsystems.github.io
+updateJson=https://raw.githubusercontent.com/DresOperatingSystems/DresOS-Magisk-Modules/main/webview/update.json
+support=https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/issues

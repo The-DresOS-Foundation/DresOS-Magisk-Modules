@@ -1,0 +1,9 @@
+*.zip
+*.log
+build/
+donors/
+.DS_Store
+*.swp
+*.swo
+*.swn
+*~
