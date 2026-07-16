@@ -26,7 +26,7 @@ See [webview/README.md](https://github.com/DresOperatingSystems/DresOS-Magisk-Mo
 
 Universal systemless microG suite and drop-in replacement for Google Play Services. Ships the officially signed microG GmsCore, Companion (FakeStore) and GsfProxy as privileged system apps, plus Aurora Store along with Aurora Services. It is a pure file overlay with no Zygisk payload, no Xposed, and no boot scripts, so it cannot bootloop the device and coexists cleanly with the DresOS WebView module. Signature spoofing is provided by the ROM: because the microG APKs carry the official microG key, any ROM that supports microG signature spoofing activates it automatically.
 
-[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/microg-v3.1.1/DresOS-microG-v3_1_1.zip)
+[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/tag/microg-v3.1.2)
 
 |  |  |
 | --- | --- |
