@@ -39,16 +39,6 @@ Universal systemless microG suite and drop-in replacement for Google Play Servic
 
 See [microg/README.md](microg/README.md) for details.
 
-## Roadmap
-
-| Module | Status |
-| --- | --- |
-| `dresoswv` AOSmium WebView | v2.2.0 |
-| `dresosmicrog` microG | v3.0.0 |
-| `dresosdebloat` Debloater | Planned |
-| `dresosperms` Permissions Hardener | Planned |
-| `dresosafwall` AFWall+ Bootstrap | Planned |
-
 ## License
 
 GPL-3.0.
@@ -63,5 +53,3 @@ GPL-3.0.
 > **Help fund future development.** DresOS is built by a small open source team in our spare time. If our guide, Magisk modules or app saved you a weekend of research, please tip the jar. Funds go to test devices, dev stations, and developer time on updates and future projects.
 
 [![Please Help fund future projects and keep this one going](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/dresos)
-
-**We will also be putting each module onto its own repo soon once we release more for ease of access**
