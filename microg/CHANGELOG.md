@@ -1,3 +1,7 @@
+## v3.1.2
+
+- Auto-update: refreshed the officially-signed microG core (GmsCore versionCode 252432032).
+
 ## v3.1.1
 
 ### Changed: stock-ROM signature-spoofing guidance
