@@ -4,4 +4,4 @@
  | |_| | | |  __/\__ \| |_| |___) |
  |____/|_|  \___||___/ \___/|____/
    D E F E N S I V E   S E C U R I T Y
-     DresOperatingSystems
+     The DresOS Foundation

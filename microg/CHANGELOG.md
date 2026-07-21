@@ -1,3 +1,9 @@
+## v3.1.3
+
+- Repointed the in-app update and issues links to the current organisation so update checks resolve.
+- Removed the progress and explanation output from the module scripts.
+- Version references set to GmsCore 0.3.15.250932 (versionCode 250932030) and Companion 0.3.15.40226 (versionCode 84022630).
+
 ## v3.1.2
 
 - Auto-update: refreshed the officially-signed microG core (GmsCore versionCode 252432032).
@@ -125,7 +131,7 @@ A targeted fix is the headline feature of **v2.1.0** (see roadmap below).
 
 ### Help us out
 
-We are a small team. If you flash this and something does not work, please open a bug report at https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/issues with:
+We are a small team. If you flash this and something does not work, please open a bug report at https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/issues with:
 
 - Device model and Android version (`getprop ro.product.model`, `getprop ro.build.version.release`)
 - ROM (stock OEM, CalyxOS, LineageOS, etc.) and ROM version

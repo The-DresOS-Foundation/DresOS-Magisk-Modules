@@ -13,8 +13,8 @@ names, which is what lets it install on stock firmware.
 
 ## What is inside
 
-- microG GmsCore 0.3.15 (official, key 9bd06727...)
-- microG Companion (official)
+- microG GmsCore 0.3.15.250932, versionCode 250932030 (official, key 9bd06727...)
+- microG Companion 0.3.15.40226, versionCode 84022630 (official)
 - GsfProxy (official microG key)
 - Aurora Store (optional, when available)
 - Aurora Services (optional, when available)

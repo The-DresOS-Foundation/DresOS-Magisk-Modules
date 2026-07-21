@@ -8,7 +8,6 @@ OLD_GMS="$(cat UPSTREAM_GMSCORE 2>/dev/null || echo 0)"
 
 if [ "$NEW_GMS" = "$OLD_GMS" ]; then
     echo "changed=false" >> "$OUT"
-    echo "No upstream microG change (GmsCore versionCode $NEW_GMS). Nothing to do."
     exit 0
 fi
 
@@ -26,8 +25,8 @@ cat > update.json <<JSON
 {
     "version": "${NEW_VER}",
     "versionCode": ${NEW_VC},
-    "zipUrl": "https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/microg-${NEW_VER}/${ZIP}",
-    "changelog": "https://raw.githubusercontent.com/DresOperatingSystems/DresOS-Magisk-Modules/main/microg/CHANGELOG.md"
+    "zipUrl": "https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/microg-${NEW_VER}/${ZIP}",
+    "changelog": "https://raw.githubusercontent.com/The-DresOS-Foundation/DresOS-Magisk-Modules/main/microg/CHANGELOG.md"
 }
 JSON
 
@@ -48,4 +47,3 @@ echo "$NEW_GMS" > UPSTREAM_GMSCORE
     echo "newver=${NEW_VER}"
     echo "zip=${ZIP}"
 } >> "$OUT"
-echo "Bumped module to ${NEW_VER} (versionCode ${NEW_VC}); bundled GmsCore versionCode ${NEW_GMS}."

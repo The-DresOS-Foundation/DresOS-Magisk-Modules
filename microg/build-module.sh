@@ -9,11 +9,6 @@ ZIPNAME="DresOS-microG-${VER//./_}.zip"
 BUILD="build"
 PERMS_XML="system/product/etc/permissions/privapp-permissions-dresos-microg.xml"
 
-if [ "${GOOGLE_SIGNED:-}" = "1" ]; then
-    echo "  note: the GOOGLE_SIGNED stock flavor was removed in v3.1.1."
-    echo "        Building the standard spoofing flavor. See README for stock setup."
-fi
-FLAVOR="microg-key"
 COREDIR="apk"
 
 req() { command -v "$1" >/dev/null 2>&1 || { echo "! need '$1' on PATH"; exit 1; }; }
@@ -33,8 +28,6 @@ apk_cert_sha256() {
 
 read_cert() { apk_cert_sha256 "$1"; }
 
-echo "Building DresOS microG $VER"
-
 for a in GmsCore Companion GsfProxy; do
     [ -f "$COREDIR/$a.apk" ] || { echo "! missing $COREDIR/$a.apk"; echo "  run refresh-upstream.sh first (see apk/README.txt)"; exit 1; }
 done
@@ -48,7 +41,6 @@ for a in GmsCore Companion GsfProxy; do
         echo "! ROM signature spoofing will not activate with this APK. Aborting."
         exit 1
     fi
-    echo "  verified official microG key: $a.apk"
 done
 
 regen_allowlist() {
@@ -91,7 +83,6 @@ ven_extra = set(filter(None, os.environ.get("VEN_PERMS","").splitlines()))
 a = merge("com.google.android.gms", gms_extra)
 b = merge("com.android.vending", ven_extra)
 open(path, "w", encoding="utf-8").write(xml)
-print("  allowlist merge: +%d GmsCore, +%d Companion permission(s) from manifests" % (a, b))
 PY
 }
 regen_allowlist
@@ -101,7 +92,6 @@ mkdir -p "$BUILD"
 cp -a module.prop customize.sh action.sh post-fs-data.sh service.sh \
       update.json README.md CHANGELOG.md "$BUILD"/
 cp -a META-INF common system "$BUILD"/
-printf '%s\n' "$FLAVOR" > "$BUILD/flavor"   # read by customize.sh / action.sh
 mkdir -p "$BUILD/system/product/priv-app/GmsCore" \
          "$BUILD/system/product/priv-app/Companion" \
          "$BUILD/system/product/priv-app/GsfProxy"
@@ -112,24 +102,11 @@ cp "$COREDIR/GsfProxy.apk"  "$BUILD/system/product/priv-app/GsfProxy/GsfProxy.ap
 if [ -f apk/AuroraServices.apk ]; then
     mkdir -p "$BUILD/system/product/priv-app/AuroraServices"
     cp apk/AuroraServices.apk "$BUILD/system/product/priv-app/AuroraServices/AuroraServices.apk"
-    echo "  included Aurora Services"
-else
-    echo "  Aurora Services not present; skipping (optional)"
 fi
 if [ -f apk/AuroraStore.apk ]; then
     mkdir -p "$BUILD/system/product/app/AuroraStore"
     cp apk/AuroraStore.apk "$BUILD/system/product/app/AuroraStore/AuroraStore.apk"
-    echo "  included Aurora Store"
-else
-    echo "  Aurora Store not present; skipping (optional)"
 fi
 
 ( cd "$BUILD" && zip -r -q -X "../$ZIPNAME" . -x "*.DS_Store" "._*" )
 rm -rf "$BUILD"
-
-echo
-echo "Built: $ZIPNAME"
-ls -lh "$ZIPNAME" | awk '{print "  size: "$5}'
-echo "  sha256: $(openssl dgst -sha256 "$ZIPNAME" | sed 's/.*= //')"
-echo
-echo "Attach $ZIPNAME to a GitHub Release tagged microg-$VER so update.json resolves."

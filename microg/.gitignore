@@ -1,8 +1,9 @@
 *.zip
 *.log
 build/
-.zygisk_stash/
-# Stock-flavor work dirs and the proprietary Google donor: never commit these.
 donors/
-apk-google-signed/
-.sigwork/
+.DS_Store
+*.swp
+*.swo
+*.swn
+*~

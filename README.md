@@ -1,6 +1,6 @@
 # DresOS Magisk Modules
 
-Part of the [DresOS Android Defensive Security System](https://github.com/DresOperatingSystems/DresOS-The-Android-Defensive-Security-System).
+Part of the [DresOS Android Defensive Security System](https://github.com/The-DresOS-Foundation/DresOS-The-Android-Defensive-Security-System).
 
 ---
 
@@ -8,9 +8,9 @@ Part of the [DresOS Android Defensive Security System](https://github.com/DresOp
 
 ### WebView (`dresoswv`)
 
-Replaces Android System WebView with [DresOS WebView](https://github.com/DresOperatingSystems/DresOS-WebView), our own webview to complement the module.
+Replaces Android System WebView with [DresOS WebView](https://github.com/The-DresOS-Foundation/DresOS-WebView), our own webview to complement the module.
 
-[Download latest release](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/releases/download/webview-v2.2.0/DresOS-WebView-v2_2_0.zip)
+[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/webview-v2.2.0/DresOS-WebView-v2_2_0.zip)
 
 |  |  |
 | --- | --- |
@@ -20,7 +20,7 @@ Replaces Android System WebView with [DresOS WebView](https://github.com/DresOpe
 | ABI | arm, arm64 |
 | Root | Magisk 24.0+ |
 
-See [webview/README.md](https://github.com/DresOperatingSystems/DresOS-Magisk-Modules/tree/main/webview) for details.
+See [webview/README.md](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/tree/main/webview) for details.
 
 ### microG (`dresosmicrog`)
 
@@ -30,7 +30,8 @@ Universal systemless microG suite and drop-in replacement for Google Play Servic
 
 |  |  |
 | --- | --- |
-| microG GmsCore | 0.3.15.250932 |
+| microG GmsCore | 0.3.15.250932 (versionCode 250932030) |
+| microG Companion | 0.3.15.40226 (versionCode 84022630) |
 | Packages | `com.google.android.gms`, `com.android.vending`, `com.google.android.gsf`, `com.aurora.store`, `com.aurora.services` |
 | Android | 8.0 through 16+ (API 26 to 36+) |
 | ABI | arm, arm64, x86, x86_64 (multi-ABI microG APK) |
