@@ -1,3 +1,11 @@
+## v3.1.4
+
+- Fixed the module doing nothing about stock Google Play Services on ROMs where Play Services had updated itself. The check only looked at the first path the package manager returned, which on any online stock device is the updated copy in the data partition, so the copy sitting in the system partition was never hidden. microG went in, stock Play Services stayed active and won, and every Google dependent app crashed in a loop after reboot. Reported from a Samsung J600F on One UI 2.0.
+- The module now checks for Play Services updates in the data partition before it changes anything and stops with instructions to uninstall those updates first. Magisk cannot replace files in the data partition, so this is the one case the module has to hand back to you rather than work around. Nothing is touched when it stops.
+- Fixed Aurora Services being staged as a privileged app without the permissions it actually needs. Only INSTALL_PACKAGE_UPDATES was allowlisted, so on ROMs that enforce the privileged permission allowlist, which includes Samsung stock, silent installing never worked. It now has INSTALL_PACKAGES and DELETE_PACKAGES as well.
+- The allowlist is now generated from every bundled APK at build time. It previously read only GmsCore and Companion, which is how the Aurora Services gap went unnoticed.
+- The signature spoofing message now says what to do about it, that stock ROMs need LSPosed with FakeGApps, rather than only saying the ROM may not support it.
+
 ## v3.1.3
 
 - Repointed the in-app update and issues links to the current organisation so update checks resolve.

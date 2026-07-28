@@ -46,11 +46,14 @@ done
 regen_allowlist() {
     command -v aapt >/dev/null 2>&1 || { echo "  (aapt not found; using committed allowlist as-is)"; return 0; }
     command -v python3 >/dev/null 2>&1 || { echo "  (python3 not found; using committed allowlist as-is)"; return 0; }
-    local gms ven
-    gms=$(aapt dump permissions apk/GmsCore.apk 2>/dev/null | sed -n "s/^uses-permission: name='\([^']*\)'.*/\1/p" | sort -u)
-    ven=$(aapt dump permissions apk/Companion.apk 2>/dev/null | sed -n "s/^uses-permission: name='\([^']*\)'.*/\1/p" | sort -u)
+    local gms ven gsf aus
+    perms_of() { aapt dump permissions "$1" 2>/dev/null | sed -n "s/^uses-permission: name='\([^']*\)'.*/\1/p" | sort -u; }
+    gms=$(perms_of apk/GmsCore.apk)
+    ven=$(perms_of apk/Companion.apk)
+    gsf=$(perms_of apk/GsfProxy.apk)
+    aus=$(perms_of apk/AuroraServices.apk)
     [ -n "$gms" ] || { echo "  (could not read GmsCore permissions; using committed allowlist)"; return 0; }
-    GMS_PERMS="$gms" VEN_PERMS="$ven" python3 - "$PERMS_XML" <<'PY'
+    GMS_PERMS="$gms" VEN_PERMS="$ven" GSF_PERMS="$gsf" AUS_PERMS="$aus" python3 - "$PERMS_XML" <<'PY'
 import os, re, sys
 path = sys.argv[1]
 xml = open(path, encoding="utf-8").read()
@@ -78,10 +81,11 @@ def merge(pkg, extra):
     xml = xml.replace(head + body + tail, head + new_body + tail, 1)
     return len(add)
 
-gms_extra = set(filter(None, os.environ.get("GMS_PERMS","").splitlines()))
-ven_extra = set(filter(None, os.environ.get("VEN_PERMS","").splitlines()))
-a = merge("com.google.android.gms", gms_extra)
-b = merge("com.android.vending", ven_extra)
+for pkg, var in (("com.google.android.gms","GMS_PERMS"),
+                 ("com.android.vending","VEN_PERMS"),
+                 ("com.google.android.gsf","GSF_PERMS"),
+                 ("com.aurora.services","AUS_PERMS")):
+    merge(pkg, set(filter(None, os.environ.get(var,"").splitlines())))
 open(path, "w", encoding="utf-8").write(xml)
 PY
 }

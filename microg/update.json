@@ -1,6 +1,6 @@
 {
-    "version": "v3.1.3",
-    "versionCode": 30103,
-    "zipUrl": "https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/microg-v3.1.3/DresOS-microG-v3_1_3.zip",
+    "version": "v3.1.4",
+    "versionCode": 30104,
+    "zipUrl": "https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/microg-v3.1.4/DresOS-microG-v3_1_4.zip",
     "changelog": "https://raw.githubusercontent.com/The-DresOS-Foundation/DresOS-Magisk-Modules/main/microg/CHANGELOG.md"
 }
