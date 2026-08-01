@@ -1,19 +1,33 @@
+## v2.3.0
+
+- Carries the new DresOS WebView engine, rebuilt on Cromite 148.0.7778.168. That is three Chromium majors on from the engine the module shipped before, so it brings every upstream security fix in between.
+- AOSmium is back as the backup engine on 32 bit, and it is a much newer build than the one that was bundled before. It is credited to AXP.OS in the installer, the overlay and this repository rather than presented as ours.
+- The bundled engines now update themselves. A release workflow pulls the DresOS engine from its own releases and the newest stable AOSmium from the AXP.OS repository, checks both against their pinned signing certificates, builds the module and publishes it. Pre-releases are skipped, because AXP.OS marks untested builds that way.
+- The signing key never reaches the workflow. The engine is built and signed on the maintainer's machine and the workflow only packages and publishes what is already signed.
+
+## v2.2.2
+
+- AOSmium is back as the backup engine. It was removed in v2.2.1, which left every armeabi-v7a device with nothing at all, and that was the wrong call. The module ships DresOS WebView as the primary provider on arm64 and AOSmium by AXP.OS as the backup on 32 bit, exactly as it did before, with AOSmium credited to AXP.OS in the installer, the overlay and this repository rather than presented as ours.
+- There is no 32 bit DresOS engine and none is promised. Upstream publishes System WebView for arm64 and x64 only, so a 32 bit DresOS build would need Chromium compiled from source. Until that happens AOSmium covers those devices, which is what it was always there for.
+- Added an automatic build and release workflow. Pushing a webview tag pulls the published DresOS engine from the DresOS-WebView releases, pulls AOSmium from the pinned URL in webview/engines.conf, verifies both against their pinned signing certificates, builds the module and publishes the release. The release key never leaves the build host; the workflow only packages and publishes.
+- Added tools/verify-engines.sh, which checks both bundled engines against their expected certificate and package name. The build refuses to run if either is wrong, because the overlay names those certificates and a mismatch produces a module that installs and then silently cannot be selected.
+
 ## v2.2.1
 
-- Repointed the in-module update check and the issues link at The DresOS Foundation. They still pointed at the old account, so update checks were resolving through a redirect or not at all. The microG module had this fixed in v3.1.3; this module was missed.
+- Repointed the in module update check and the issues link at The DresOS Foundation. They still pointed at the old account, so update checks were resolving through a redirect or not at all. The microG module had this fixed in v3.1.3; this module was missed.
 - Added minMagisk to module.prop so Magisk enforces the same floor the installer checks, rather than letting the flash start and then abort.
 - The installer banner now reads the version from module.prop instead of carrying its own hardcoded copy.
 - Corrected the README: the standalone engine APK is distributed through its own GitHub releases only. It is too large for IzzyOnDroid, and the link pointed at the old account.
-- Dropped the 32-bit path. armeabi-v7a devices were being given AOSmium by AXP.OS, another project's engine, presented as a DresOS one. Rather than keep shipping someone else's build under our name, the module is arm64 only until a 32-bit DresOS WebView engine exists. A 32-bit device is now told that at flash time and nothing on it is touched. The AOSmium entry is gone from the RRO as well.
+- Dropped the 32 bit path. armeabi-v7a devices were being given AOSmium by AXP.OS, another project's engine, presented as a DresOS one. Rather than keep shipping someone else's build under our name, the module is arm64 only until a 32 bit DresOS WebView engine exists. A 32 bit device is now told that at flash time and nothing on it is touched. The AOSmium entry is gone from the RRO as well.
 
 ## v2.2.0
 
 - Switched the bundled WebView engine from AOSmium (AXP.OS) to DresOS WebView, our own Chromium build from Cromite, signed with the DresOS release key.
 - The static RRO now whitelists org.dresos.webview with the DresOS signing certificate in config_webview_packages.
 - Updating over the AOSmium build swaps AOSmium out for DresOS WebView in place (same module id), clearing the stale provider selection on boot.
-- arm64 runs the DresOS WebView engine. 32-bit arm (armeabi-v7a) runs a bundled secondary engine so the module still covers 32-bit devices the arm64 build cannot, until a 32-bit DresOS WebView build ships.
+- arm64 runs the DresOS WebView engine. 32 bit arm (armeabi-v7a) runs a bundled secondary engine so the module still covers 32 bit devices the arm64 build cannot, until a 32 bit DresOS WebView build ships.
 - The static RRO whitelists both engines in config_webview_packages; customize.sh selects the engine for the device ABI at flash time, and service.sh activates whichever one landed.
-- Activation via cmd webviewupdate, the post-fs-data bootloop sentinel, the inert-mode fallback, and the recovery-safe stock WebView restore are unchanged.
+- Activation via cmd webviewupdate, the post-fs-data bootloop sentinel, the inert mode fallback, and the recovery safe stock WebView restore are unchanged.
 
 # Earlier releases, when this module shipped the AOSmium engine
 

@@ -97,8 +97,4 @@
     <privapp-permissions package="com.aurora.services">
         <permission name="android.permission.INSTALL_PACKAGE_UPDATES"/>
     </privapp-permissions>
-    <privapp-permissions package="com.google.android.gsf">
-        <permission name="com.google.android.c2dm.permission.RECEIVE"/>
-        <permission name="com.google.android.c2dm.permission.SEND"/>
-    </privapp-permissions>
 </permissions>

@@ -13,14 +13,17 @@ OUT_ZIP="DresOS-WebView-$(echo "$VERSION" | tr '.' '_').zip"
 
 RRO="overlay/DresOSWebViewOverlay.apk"
 WV="apks/webview-arm64.apk"
+WV32="apks/aosmium-arm32.apk"
 
-for f in "$RRO" "$WV"; do
+for f in "$RRO" "$WV" "$WV32"; do
     if [ ! -f "$f" ]; then
         echo "ERROR: missing required artifact: $f" >&2
         if [ "$f" = "$RRO" ]; then
-            echo "  Build it with: (cd overlay && ./build.sh)" >&2
-        else
+            echo "  Build it with: (cd overlay && bash build.sh)" >&2
+        elif [ "$f" = "$WV" ]; then
             echo "  Place the signed DresOS WebView arm64 APK at apks/webview-arm64.apk" >&2
+        else
+            echo "  Place the AOSmium 32 bit arm APK at apks/aosmium-arm32.apk" >&2
         fi
         exit 1
     fi
@@ -33,6 +36,11 @@ if command -v aapt >/dev/null 2>&1; then
         exit 1
     fi
 fi
+    pkg32=$(aapt dump badging "$WV32" 2>/dev/null | grep "^package:" | head -1 | sed "s/^package: name='\([^']*\)'.*/\1/")
+    if [ -n "$pkg32" ] && [ "$pkg32" != "org.axpos.aosmium_wv" ]; then
+        echo "ERROR: $WV32 has package name '$pkg32', expected 'org.axpos.aosmium_wv'." >&2
+        exit 1
+    fi
 
 STAGE=$(mktemp -d)
 trap "rm -rf $STAGE" EXIT
@@ -49,7 +57,8 @@ cp README.md        "$STAGE/"
 
 mkdir -p "$STAGE/overlay" "$STAGE/webview"
 cp "$RRO"  "$STAGE/overlay/DresOSWebViewOverlay.apk"
-cp "$WV" "$STAGE/webview/webview-arm64.apk"
+cp "$WV"   "$STAGE/webview/webview-arm64.apk"
+cp "$WV32" "$STAGE/webview/aosmium-arm32.apk"
 
 rm -f "$OUT_ZIP"
 echo "  Building $OUT_ZIP"

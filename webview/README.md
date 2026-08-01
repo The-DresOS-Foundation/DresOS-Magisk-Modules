@@ -7,7 +7,7 @@ hardening throughout.
 
 The System WebView is the engine hundreds of apps use internally whenever they
 render web content. By default that engine is Google's. This module replaces it
-device-wide with DresOS's own build, signed with the DresOS release key, in a
+device wide with DresOS's own build, signed with the DresOS release key, in a
 single Magisk flash.
 
 The engine is also published on its own as a standalone signed APK at
@@ -17,10 +17,15 @@ IzzyOnDroid to accept, so it is not listed there.
 
 ## What it does
 
-1. Validates the host: Magisk 29.0 or newer, Android 10 through 16, arm64.
-   Aborts cleanly on every other ABI and on devices that ship WebView as an APEX.
-   There is no 32-bit DresOS WebView engine yet, so armeabi-v7a devices are told
-   that and nothing is changed.
+1. Validates the host: Magisk 29.0 or newer, Android 10 through 16, arm64 or
+   armeabi-v7a. Aborts cleanly on every other ABI and on devices that ship
+   WebView as an APEX.
+
+   On arm64 the engine is DresOS WebView, our own Cromite based build signed with
+   our release key. There is no 32 bit DresOS engine, because upstream publishes
+   System WebView for arm64 and x64 only, so armeabi-v7a devices get
+   [AOSmium](https://axpos.org) by AXP.OS instead, bundled unmodified and signed
+   with their key. It is credited as theirs in the installer and in the overlay.
 2. Drops the signed DresOS WebView APK into the systemless tree at
    `system/product/app/DresOSWebView/` via Magisk magic mount, so the framework
    `MATCH_FACTORY_ONLY` scan sees it as a preinstalled provider.
@@ -33,7 +38,7 @@ IzzyOnDroid to accept, so it is not listed there.
    it to the active provider, with a `settings put global webview_provider`
    fallback write, then verifies the selection via `dumpsys`.
 5. Once DresOS WebView is the confirmed active provider, the stock WebView is
-   disabled (not deleted) and a recovery-safe restore trampoline is planted, so
+   disabled (not deleted) and a recovery safe restore trampoline is planted, so
    the stock WebView always returns on module removal. Opt out by creating
    `/data/adb/dresoswv_keep_stock_webview` before flashing.
 
@@ -41,7 +46,7 @@ IzzyOnDroid to accept, so it is not listed there.
 
 - **post-fs-data sentinel:** a `boot_pending` marker is dropped each boot and
   cleared on successful activation. A stale marker on the next boot means the
-  previous boot crashed, and the module auto-disables itself.
+  previous boot crashed, and the module disables itself itself.
 - **Inert mode:** set on any activation failure so no further activation is
   attempted on later boots, preventing retry storms.
 

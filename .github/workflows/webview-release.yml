@@ -1,0 +1,86 @@
+name: WebView release
+
+on:
+  push:
+    tags:
+      - "webview-v*"
+  workflow_dispatch:
+    inputs:
+      engine_tag:
+        description: "DresOS-WebView release tag to pull the engine from, blank for latest"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: webview-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Put android build-tools on PATH
+        run: |
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          echo "$BT" >> "$GITHUB_PATH"
+
+      - name: Read the engine sources
+        id: cfg
+        working-directory: webview
+        run: |
+          [ -f engines.conf ] || { echo "webview/engines.conf is missing"; exit 1; }
+          . ./engines.conf
+          echo "aosmium_repo=${AOSMIUM_REPO:?not set in webview/engines.conf}" >> "$GITHUB_OUTPUT"
+          echo "aosmium_asset=${AOSMIUM_ASSET:?not set in webview/engines.conf}" >> "$GITHUB_OUTPUT"
+          echo "engine_repo=${ENGINE_REPO:-The-DresOS-Foundation/DresOS-WebView}" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch the DresOS engine
+        working-directory: webview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.engine_tag }}
+        run: |
+          mkdir -p apks
+          if [ -n "$TAG" ]; then
+            gh release download "$TAG" --repo "${{ steps.cfg.outputs.engine_repo }}" --pattern "*arm64*.apk" --output apks/webview-arm64.apk --clobber
+          else
+            gh release download --repo "${{ steps.cfg.outputs.engine_repo }}" --pattern "*arm64*.apk" --output apks/webview-arm64.apk --clobber
+          fi
+
+      - name: Fetch the newest stable AOSmium
+        working-directory: webview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ steps.cfg.outputs.aosmium_repo }}
+          ASSET: ${{ steps.cfg.outputs.aosmium_asset }}
+        run: |
+          TAG=$(gh api "repos/$REPO/releases" --jq 'map(select(.prerelease==false and .draft==false)) | .[0].tag_name')
+          [ -n "$TAG" ] || { echo "no stable release found in $REPO"; exit 1; }
+          echo "AOSmium stable release: $TAG"
+          gh release download "$TAG" --repo "$REPO" --pattern "$ASSET" --output apks/aosmium-arm32.apk --clobber
+
+      - name: Verify both engines against their pinned certificates
+        working-directory: webview
+        run: bash tools/verify-engines.sh
+
+      - name: Build the module
+        working-directory: webview
+        run: bash build-module.sh
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VER=$(grep '^version=' webview/module.prop | cut -d= -f2)
+          ZIP="DresOS-WebView-$(echo "$VER" | tr '.' '_').zip"
+          awk -v v="## $VER" '$0==v{f=1;next}/^## /{f=0}f' webview/CHANGELOG.md > /tmp/notes.md
+          [ -s /tmp/notes.md ] || echo "See the changelog." > /tmp/notes.md
+          gh release create "webview-$VER" "webview/$ZIP" \
+            --title "DresOS WebView Module $VER" \
+            --notes-file /tmp/notes.md || \
+          gh release upload "webview-$VER" "webview/$ZIP" --clobber

@@ -24,6 +24,6 @@ carries the official microG key before it will build.
 microG on stock firmware: these APKs keep the official microG key, so the system
 reports the real microG signature. On a stock ROM, enable signature spoofing with
 LSPosed (JingMatrix fork) plus FakeGApps on Android 15 and below; on Android 16
-use a ROM with built-in microG spoofing for now. See the module README for the
-full setup. The earlier Google-signed stock flavor was removed in v3.1.1 because
+use a ROM with built in microG spoofing for now. See the module README for the
+full setup. The earlier Google signed stock flavor was removed in v3.1.1 because
 a grafted Google signature cannot verify against microG's different bytes.
