@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- DresOS microG v3.0.0 default runtime grants for com.google.android.gms.
+<!-- DresOS microG default runtime grants for com.google.android.gms.
      Adapted from the microG installer defaults. Non-fixed = user-revocable. -->
 <exceptions>
     <exception package="com.google.android.gms">

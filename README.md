@@ -10,23 +10,23 @@ Part of the [DresOS Android Defensive Security System](https://github.com/The-Dr
 
 Replaces Android System WebView with [DresOS WebView](https://github.com/The-DresOS-Foundation/DresOS-WebView), our own webview to complement the module.
 
-[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/webview-v2.2.0/DresOS-WebView-v2_2_0.zip)
+[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/webview-v2.2.1/DresOS-WebView-v2_2_1.zip)
 
 |  |  |
 | --- | --- |
 | DresOS WebView version | 145.0.7632.120 |
 | Package | `org.dresos.webview` |
 | Android | 10 through 16+ (API 29 to 36+) |
-| ABI | arm, arm64 |
-| Root | Magisk 24.0+ |
+| ABI | arm64 |
+| Root | Magisk 29.0+ |
 
 See [webview/README.md](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/tree/main/webview) for details.
 
 ### microG (`dresosmicrog`)
 
-Universal systemless microG suite and drop-in replacement for Google Play Services. Ships the officially signed microG GmsCore, Companion (FakeStore) and GsfProxy as privileged system apps, plus Aurora Store along with Aurora Services. It is a pure file overlay with no Zygisk payload, no Xposed, and no boot scripts, so it cannot bootloop the device and coexists cleanly with the DresOS WebView module. Signature spoofing is provided by the ROM: because the microG APKs carry the official microG key, any ROM that supports microG signature spoofing activates it automatically.
+Universal systemless microG suite and drop-in replacement for Google Play Services. Ships the officially signed microG GmsCore, Companion (FakeStore) and GsfProxy as privileged system apps, plus Aurora Store along with Aurora Services. It is a pure file overlay with no Zygisk payload and no Xposed, so it cannot bootloop the device and coexists cleanly with the DresOS WebView module. The only boot scripts it carries are a watchdog that disables this module alone if a boot never completes. Signature spoofing is provided by the ROM: because the microG APKs carry the official microG key, any ROM that supports microG signature spoofing activates it automatically.
 
-[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/tag/microg-v3.1.3)
+[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/microg-v3.1.4/DresOS-microG-v3_1_4.zip)
 
 |  |  |
 | --- | --- |
@@ -37,6 +37,8 @@ Universal systemless microG suite and drop-in replacement for Google Play Servic
 | ABI | arm, arm64, x86, x86_64 (multi-ABI microG APK) |
 | Signature spoofing | provided by the ROM for officially signed microG (LineageOS 2024-02-26+, e/OS, CalyxOS, iodeOS, DivestOS, and others) |
 | Root | Magisk 24.0+ |
+
+The bundled apps keep themselves current: a scheduled workflow checks the microG repo and IzzyOnDroid every week, and if GmsCore, Companion, GsfProxy, Aurora Store or Aurora Services has moved it rebuilds the module, bumps the version and publishes the release automatically. Every bundled APK is verified against a pinned signing key before it is staged.
 
 See [microg/README.md](microg/README.md) for details.
 

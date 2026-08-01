@@ -17,7 +17,7 @@ if [ ! -f "$KEYSTORE" ]; then
     keytool -genkeypair -keystore "$KEYSTORE" -alias "$KEY_ALIAS" \
         -keyalg RSA -keysize 2048 -storepass "$KEY_PASS" -keypass "$KEY_PASS" \
         -validity 36500 \
-        -dname "CN=DresOS, OU=Magisk Module, O=DresOperatingSystems, L=N/A, ST=N/A, C=N/A" \
+        -dname "CN=DresOS, OU=Magisk Module, O=The DresOS Foundation, L=N/A, ST=N/A, C=N/A" \
         2>&1 | tail -2
 fi
 

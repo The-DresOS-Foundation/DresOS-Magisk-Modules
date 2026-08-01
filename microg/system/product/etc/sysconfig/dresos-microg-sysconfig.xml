@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- DresOS microG v3.0.0 sysconfig. Keeps microG alive for push (FCM) and
+<!-- DresOS microG sysconfig. Keeps microG alive for push (FCM) and
      location, and whitelists the Companion store. Additive and safe. -->
 <config>
     <allow-in-power-save package="com.google.android.gms" />

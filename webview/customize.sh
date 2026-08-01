@@ -1,9 +1,11 @@
 #!/system/bin/sh
 
+MOD_VER=$(grep '^version=' "$MODPATH/module.prop" 2>/dev/null | cut -d= -f2)
+
 ui_print " "
 ui_print "==============================================="
 ui_print "  DresOS WebView"
-ui_print "  Version v2.2.0"
+ui_print "  Version $MOD_VER"
 ui_print "  Chromium engine (Cromite based)"
 ui_print "  dresoperatingsystems.github.io"
 ui_print "==============================================="
@@ -27,7 +29,7 @@ fi
 if [ "$API_LEVEL" -gt "$TESTED_MAX_API" ]; then
     ui_print "! Untested on API $API_LEVEL (tested up to API $TESTED_MAX_API, Android 16)."
     ui_print "! Proceeding anyway. If WebView does not activate, report it at"
-    ui_print "! github.com/DresOperatingSystems/DresOS-Magisk-Modules"
+    ui_print "! github.com/The-DresOS-Foundation/DresOS-Magisk-Modules"
 fi
 
 ABI=$(getprop ro.product.cpu.abi)
@@ -36,10 +38,12 @@ case "$ABI" in
     arm64-v8a)
         APK_SRC_NAME="webview-arm64.apk"
         WEBVIEW_PKG="org.dresos.webview"
+        ENGINE_LABEL="DresOS WebView"
         ;;
     armeabi-v7a|armeabi)
-        APK_SRC_NAME="aosmium-arm32.apk"
-        WEBVIEW_PKG="org.axpos.aosmium_wv"
+        ui_print "! There is no 32 bit DresOS WebView engine yet."
+        ui_print "! This module is arm64 only. Nothing has been changed."
+        abort "! Aborting install."
         ;;
     x86|x86_64)
         ui_print "! No x86 WebView engine is bundled in this module."
@@ -50,7 +54,7 @@ case "$ABI" in
         abort "! Aborting install."
         ;;
 esac
-ui_print "  Selected the WebView engine for this device."
+ui_print "  Engine for this device: $ENGINE_LABEL"
 echo "$WEBVIEW_PKG" > "$MODPATH/active_webview_pkg"
 
 if ls -d /apex/com.google.android.webview* >/dev/null 2>&1; then
@@ -79,7 +83,7 @@ if [ -n "$OLD_PROVIDER" ] && [ "$OLD_PROVIDER" != "$WEBVIEW_PKG" ]; then
         org.dresos.webview|org.axpos.aosmium_wv) NEED_CLEAR=1 ;;
     esac
 fi
-if [ -d "$OLD_MOD/system/product/app/AOSmiumWebView" ] && [ "$WEBVIEW_PKG" != "org.axpos.aosmium_wv" ]; then
+if [ -d "$OLD_MOD/system/product/app/AOSmiumWebView" ]; then
     NEED_CLEAR=1
 fi
 if [ "$NEED_CLEAR" -eq 1 ]; then

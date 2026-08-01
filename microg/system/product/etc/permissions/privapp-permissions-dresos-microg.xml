@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  DresOS microG v3.0.0  privileged-permission allowlist
+  DresOS microG privileged-permission allowlist
   Generated from the actual APK manifests bundled in this module.
   Lives on the SAME partition as the APKs (Android 11+ requirement).
   Every privileged permission each priv-app requests is allowlisted,
@@ -95,8 +95,10 @@
         <permission name="org.microg.gms.permission.WRITE_SETTINGS"/>
     </privapp-permissions>
     <privapp-permissions package="com.aurora.services">
-        <permission name="android.permission.INSTALL_PACKAGES"/>
-        <permission name="android.permission.DELETE_PACKAGES"/>
         <permission name="android.permission.INSTALL_PACKAGE_UPDATES"/>
+    </privapp-permissions>
+    <privapp-permissions package="com.google.android.gsf">
+        <permission name="com.google.android.c2dm.permission.RECEIVE"/>
+        <permission name="com.google.android.c2dm.permission.SEND"/>
     </privapp-permissions>
 </permissions>

@@ -1,3 +1,10 @@
+## v3.1.5
+
+- The bundled apps now update themselves. A scheduled workflow checks the microG repo and IzzyOnDroid every week for GmsCore, Companion, GsfProxy, Aurora Store and Aurora Services, and if any of them has moved it rebuilds the module, bumps the version and publishes the release on its own. Before this only a GmsCore change could trigger a refresh, so an Aurora update could sit unnoticed indefinitely.
+- Aurora Store and Aurora Services are now verified against pinned signing keys before they are staged, the same way the microG core already was. They were being downloaded from IzzyOnDroid and installed as system apps, one of them privileged, with nothing checking who signed them.
+- The privileged permission generator can now create an entry for a bundled app that does not have one yet. It could only add permissions to an app already listed, so a new privileged permission on GsfProxy would have been silently skipped, which is the same shape as the Aurora Services gap in 3.1.4.
+- Removed INSTALL_PACKAGES and DELETE_PACKAGES from the Aurora Services allowlist entry. Those were added in 3.1.4, but Aurora Services 0.3.0 only ever requests INSTALL_PACKAGE_UPDATES, and Android cannot grant an app a permission it does not ask for, so the two entries did nothing. If a future Aurora Services requests them the generator adds them back automatically.
+
 ## v3.1.4
 
 - Fixed the module doing nothing about stock Google Play Services on ROMs where Play Services had updated itself. The check only looked at the first path the package manager returned, which on any online stock device is the updated copy in the data partition, so the copy sitting in the system partition was never hidden. microG went in, stock Play Services stayed active and won, and every Google dependent app crashed in a loop after reboot. Reported from a Samsung J600F on One UI 2.0.

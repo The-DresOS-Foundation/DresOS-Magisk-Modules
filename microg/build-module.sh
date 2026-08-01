@@ -3,6 +3,8 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 OFFICIAL_MICROG_KEY="9bd06727e62796c0130eb6dab39b73157451582cbd138e86c468acc395d14165"
+AURORA_STORE_KEY="5c83c7672b929955dc0a1db89a5e6ae4389e2eae7ec939956041694e5815f532"
+AURORA_SERVICES_KEY="e027daef049840a924330edf22641fd93294620220fa488645c9eb7b20f7e825"
 
 VER=$(grep '^version=' module.prop | cut -d= -f2)
 ZIPNAME="DresOS-microG-${VER//./_}.zip"
@@ -38,10 +40,27 @@ for a in GmsCore Companion GsfProxy; do
         echo "! $COREDIR/$a.apk is NOT signed with the official microG key."
         echo "!   expected: $OFFICIAL_MICROG_KEY"
         echo "!   found:    ${fp:-<none>}"
-        echo "! ROM signature spoofing will not activate with this APK. Aborting."
+        echo "! ROM signature spoofing will not activate with this APK."
+        echo "! If 'found' is empty the APK has no v1 signature block to read. Aborting."
         exit 1
     fi
 done
+
+check_optional_key() {
+    local file="$1" expect="$2" name="$3" fp
+    [ -f "$file" ] || return 0
+    fp=$(read_cert "$file")
+    if [ "$fp" != "$expect" ]; then
+        echo "! $file is not signed with the expected $name key."
+        echo "!   expected: $expect"
+        echo "!   found:    ${fp:-<none>}"
+        echo "! Refusing to stage an unverified APK as a system app. Aborting."
+        exit 1
+    fi
+}
+
+check_optional_key apk/AuroraStore.apk    "$AURORA_STORE_KEY"    "Aurora Store"
+check_optional_key apk/AuroraServices.apk "$AURORA_SERVICES_KEY" "Aurora Services"
 
 regen_allowlist() {
     command -v aapt >/dev/null 2>&1 || { echo "  (aapt not found; using committed allowlist as-is)"; return 0; }
@@ -67,9 +86,17 @@ def block_of(pkg):
 
 def merge(pkg, extra):
     global xml
+    extra = sorted(p for p in extra if p)
+    if not extra:
+        return 0
     m = block_of(pkg)
     if not m:
-        return 0
+        lines = "".join('        <permission name="%s"/>\n' % p for p in extra)
+        block = '    <privapp-permissions package="%s">\n%s    </privapp-permissions>\n' % (pkg, lines)
+        if "</permissions>" not in xml:
+            return 0
+        xml = xml.replace("</permissions>", block + "</permissions>", 1)
+        return len(extra)
     head, body, tail = m.group(1), m.group(2), m.group(3)
     have = set(re.findall(r'name="([^"]+)"', body))
     add = sorted(p for p in extra if p and p not in have)

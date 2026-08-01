@@ -1,0 +1,71 @@
+name: microG autoupdate
+
+on:
+  schedule:
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: microg-autoupdate
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Put android build-tools on PATH
+        run: |
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          echo "$BT" >> "$GITHUB_PATH"
+
+      - name: Check tools
+        run: |
+          for t in curl jq zip unzip openssl python3 aapt; do
+            command -v "$t" >/dev/null 2>&1 || { echo "missing $t"; exit 1; }
+          done
+
+      - name: Fetch upstream apps
+        working-directory: microg
+        run: ./refresh-upstream.sh
+
+      - name: Bump if upstream moved
+        id: bump
+        working-directory: microg
+        run: ./bump-version.sh
+
+      - name: Build module
+        if: steps.bump.outputs.changed == 'true'
+        working-directory: microg
+        run: ./build-module.sh
+
+      - name: Commit metadata
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add microg/module.prop microg/update.json microg/CHANGELOG.md \
+                  microg/UPSTREAM_VERSIONS microg/UPSTREAM_GMSCORE \
+                  microg/apk/.gmscore_versioncode \
+                  microg/system/product/etc/permissions/privapp-permissions-dresos-microg.xml
+          git commit -m "microG ${{ steps.bump.outputs.newver }}: ${{ steps.bump.outputs.moved }}"
+          git push
+
+      - name: Publish release
+        if: steps.bump.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "microg-${{ steps.bump.outputs.newver }}" \
+            "microg/${{ steps.bump.outputs.zip }}" \
+            --title "DresOS microG ${{ steps.bump.outputs.newver }}" \
+            --notes "Automatic refresh of the bundled apps: ${{ steps.bump.outputs.moved }}.
+
+          The bundled apps keep their own upstream signatures. The build refuses to run if the microG core is not signed with the official microG key, or if Aurora Store or Aurora Services are not signed with the keys pinned in build-module.sh."

@@ -1,5 +1,4 @@
 #!/system/bin/sh
-MODDIR=${0%/*}
 PENDING=/data/adb/dresos_microg_boot_pending
 
 (

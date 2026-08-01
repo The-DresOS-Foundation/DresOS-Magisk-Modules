@@ -10,14 +10,17 @@ render web content. By default that engine is Google's. This module replaces it
 device-wide with DresOS's own build, signed with the DresOS release key, in a
 single Magisk flash.
 
-The engine is also published on its own as a standalone signed APK with
-IzzyOnDroid and Obtainium support, at
-[github.com/DresOperatingSystems/DresOS-WebView](https://github.com/DresOperatingSystems/DresOS-WebView).
+The engine is also published on its own as a standalone signed APK at
+[github.com/The-DresOS-Foundation/DresOS-WebView](https://github.com/The-DresOS-Foundation/DresOS-WebView).
+Its GitHub releases page is the only place it is distributed. It is too large for
+IzzyOnDroid to accept, so it is not listed there.
 
 ## What it does
 
 1. Validates the host: Magisk 29.0 or newer, Android 10 through 16, arm64.
-   Aborts cleanly on other ABIs and on devices that ship WebView as an APEX.
+   Aborts cleanly on every other ABI and on devices that ship WebView as an APEX.
+   There is no 32-bit DresOS WebView engine yet, so armeabi-v7a devices are told
+   that and nothing is changed.
 2. Drops the signed DresOS WebView APK into the systemless tree at
    `system/product/app/DresOSWebView/` via Magisk magic mount, so the framework
    `MATCH_FACTORY_ONLY` scan sees it as a preinstalled provider.
