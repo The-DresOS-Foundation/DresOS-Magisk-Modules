@@ -70,6 +70,11 @@
         <permission name="com.google.android.gms.permission.AD_ID"/>
         <permission name="com.google.android.gtalkservice.permission.GTALK_SERVICE"/>
         <permission name="org.microg.gms.STATUS_BROADCAST"/>
+    
+        <permission name="android.permission.ACCESS_ADSERVICES_AD_ID"/>
+        <permission name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION"/>
+        <permission name="android.permission.ACCESS_ADSERVICES_TOPICS"/>
+        <permission name="android.permission.DUMP"/>
     </privapp-permissions>
     <privapp-permissions package="com.android.vending">
         <permission name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -96,5 +101,9 @@
     </privapp-permissions>
     <privapp-permissions package="com.aurora.services">
         <permission name="android.permission.INSTALL_PACKAGE_UPDATES"/>
+    </privapp-permissions>
+    <privapp-permissions package="com.google.android.gsf">
+        <permission name="com.google.android.c2dm.permission.RECEIVE"/>
+        <permission name="com.google.android.c2dm.permission.SEND"/>
     </privapp-permissions>
 </permissions>

@@ -1,3 +1,7 @@
+## v3.1.7
+
+- Automatic refresh of the bundled apps: com.android.vending 84022630 to 84022632, com.google.android.gms 250932030 to 252432032.
+
 ## v3.1.6
 
 - Aurora Store and Aurora Services are no longer refreshed automatically. The signing key on the Aurora Store build served by IzzyOnDroid changed from the one bundled here, and the build correctly refused to stage a system app whose signing identity had moved. Auto updating an app across a key change is exactly how a differently signed package ends up shipped, so both Aurora components now stay at pinned versions with pinned keys and are only updated deliberately after the new key has been checked. The microG core, which is the part that carries security fixes, still refreshes on its own every week.
