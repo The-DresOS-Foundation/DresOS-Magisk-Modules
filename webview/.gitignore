@@ -1,5 +1,5 @@
 apks/
 overlay/release.keystore
 overlay/build/
-overlay/*.apk.idsig
+overlay/*.idsig
 *.zip

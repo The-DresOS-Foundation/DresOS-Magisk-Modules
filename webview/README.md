@@ -73,7 +73,9 @@ is promoted on the next boot. There is no need to uninstall the old module first
 ## Build
 
 The flashable zip is assembled by `build-module.sh`, which needs the compiled
-RRO (`overlay/DresOSWebViewOverlay.apk`, built by `overlay/build.sh`) and the
+RRO (`overlay/DresOSWebViewOverlay-arm64.apk` or `-arm32.apk`, both built by
+`overlay/build.sh`, one per architecture so a device only ever sees its own
+engine offered) and the
 signed DresOS WebView arm64 APK at `apks/webview-arm64.apk`.
 
 ## License

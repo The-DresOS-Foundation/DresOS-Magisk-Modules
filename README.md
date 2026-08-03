@@ -10,7 +10,7 @@ Part of the [DresOS Android Defensive Security System](https://github.com/The-Dr
 
 Replaces Android System WebView with [DresOS WebView](https://github.com/The-DresOS-Foundation/DresOS-WebView), our own webview to complement the module.
 
-[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/webview-v2.3.0/DresOS-WebView-v2_3_0.zip)
+[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/webview-v2.3.1/DresOS-WebView-v2_3_1.zip)
 
 |  |  |
 | --- | --- |
@@ -26,7 +26,7 @@ See [webview/README.md](https://github.com/The-DresOS-Foundation/DresOS-Magisk-M
 
 Universal systemless microG suite and drop in replacement for Google Play Services. Ships the officially signed microG GmsCore, Companion (FakeStore) and GsfProxy as privileged system apps, plus Aurora Store along with Aurora Services. It is a pure file overlay with no Zygisk payload and no Xposed, so it cannot bootloop the device and coexists cleanly with the DresOS WebView module. The only boot scripts it carries are a watchdog that disables this module alone if a boot never completes. Signature spoofing is provided by the ROM: because the microG APKs carry the official microG key, any ROM that supports microG signature spoofing activates it automatically.
 
-[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/microg-v3.1.5/DresOS-microG-v3_1_5.zip)
+[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/microg-v3.1.4/DresOS-microG-v3_1_4.zip)
 
 |  |  |
 | --- | --- |
@@ -45,6 +45,11 @@ See [microg/README.md](microg/README.md) for details.
 ## License
 
 GPL-3.0.
+
+## Links
+
+- https://dresoperatingsystems.github.io
+- https://xdaforums.com/t/dresos-the-android-defensive-security-system.4787891
 
 ## Donate
 

@@ -1,3 +1,7 @@
+## v2.3.1
+
+- Fixed the overlay offering both engines on the same device. The installer has always placed only one engine, chosen by the device architecture, but the overlay whitelisted both, so an arm64 phone advertised AOSmium as a selectable WebView provider even though the module never installed it there. AOSmium is the engine for the architectures the DresOS build cannot serve, not an alternative sitting next to it. There are now two overlays, one per architecture, and each device gets only the one that matches it plus the stock fallbacks.
+
 ## v2.3.0
 
 - Carries the new DresOS WebView engine, rebuilt on Cromite 148.0.7778.168. That is three Chromium majors on from the engine the module shipped before, so it brings every upstream security fix in between.

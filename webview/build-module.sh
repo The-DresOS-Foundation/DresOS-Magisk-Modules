@@ -11,15 +11,16 @@ VERSION=$(grep "^version=" module.prop | cut -d= -f2)
 [ -z "$VERSION" ] && { echo "ERROR: could not read version from module.prop"; exit 1; }
 OUT_ZIP="DresOS-WebView-$(echo "$VERSION" | tr '.' '_').zip"
 
-RRO="overlay/DresOSWebViewOverlay.apk"
+RRO="overlay/DresOSWebViewOverlay-arm64.apk"
+RRO32="overlay/DresOSWebViewOverlay-arm32.apk"
 WV="apks/webview-arm64.apk"
 WV32="apks/aosmium-arm32.apk"
 
-for f in "$RRO" "$WV" "$WV32"; do
+for f in "$RRO" "$RRO32" "$WV" "$WV32"; do
     if [ ! -f "$f" ]; then
         echo "ERROR: missing required artifact: $f" >&2
-        if [ "$f" = "$RRO" ]; then
-            echo "  Build it with: (cd overlay && bash build.sh)" >&2
+        if [ "$f" = "$RRO" ] || [ "$f" = "$RRO32" ]; then
+            echo "  Build both with: (cd overlay && bash build.sh)" >&2
         elif [ "$f" = "$WV" ]; then
             echo "  Place the signed DresOS WebView arm64 APK at apks/webview-arm64.apk" >&2
         else
@@ -56,7 +57,8 @@ cp CHANGELOG.md     "$STAGE/"
 cp README.md        "$STAGE/"
 
 mkdir -p "$STAGE/overlay" "$STAGE/webview"
-cp "$RRO"  "$STAGE/overlay/DresOSWebViewOverlay.apk"
+cp "$RRO"   "$STAGE/overlay/DresOSWebViewOverlay-arm64.apk"
+cp "$RRO32" "$STAGE/overlay/DresOSWebViewOverlay-arm32.apk"
 cp "$WV"   "$STAGE/webview/webview-arm64.apk"
 cp "$WV32" "$STAGE/webview/aosmium-arm32.apk"
 

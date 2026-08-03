@@ -37,11 +37,13 @@ ui_print "  Device ABI: $ABI"
 case "$ABI" in
     arm64-v8a)
         APK_SRC_NAME="webview-arm64.apk"
+        RRO_SRC_NAME="DresOSWebViewOverlay-arm64.apk"
         WEBVIEW_PKG="org.dresos.webview"
         ENGINE_LABEL="DresOS WebView"
         ;;
     armeabi-v7a|armeabi)
         APK_SRC_NAME="aosmium-arm32.apk"
+        RRO_SRC_NAME="DresOSWebViewOverlay-arm32.apk"
         WEBVIEW_PKG="org.axpos.aosmium_wv"
         ENGINE_LABEL="AOSmium WebView by AXP.OS"
         ;;
@@ -123,7 +125,7 @@ if [ ! -f "$APK_SRC" ]; then
 fi
 cp -f "$APK_SRC" "$MODPATH/$APP_DIR/DresOSWebView.apk"
 
-RRO_SRC="$MODPATH/overlay/DresOSWebViewOverlay.apk"
+RRO_SRC="$MODPATH/overlay/$RRO_SRC_NAME"
 if [ ! -f "$RRO_SRC" ]; then
     ui_print "! Bundled overlay missing: $RRO_SRC"
     abort "! Aborting install."
