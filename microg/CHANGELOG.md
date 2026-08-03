@@ -1,3 +1,8 @@
+## v3.1.6
+
+- Aurora Store and Aurora Services are no longer refreshed automatically. The signing key on the Aurora Store build served by IzzyOnDroid changed from the one bundled here, and the build correctly refused to stage a system app whose signing identity had moved. Auto updating an app across a key change is exactly how a differently signed package ends up shipped, so both Aurora components now stay at pinned versions with pinned keys and are only updated deliberately after the new key has been checked. The microG core, which is the part that carries security fixes, still refreshes on its own every week.
+- The release step no longer fails outright if the release it is creating already exists, which is what broke reruns.
+
 ## v3.1.5
 
 - The bundled apps now update themselves. A scheduled workflow checks the microG repo and IzzyOnDroid every week for GmsCore, Companion, GsfProxy, Aurora Store and Aurora Services, and if any of them has moved it rebuilds the module, bumps the version and publishes the release on its own. Before this only a GmsCore change could trigger a refresh, so an Aurora update could sit unnoticed indefinitely.

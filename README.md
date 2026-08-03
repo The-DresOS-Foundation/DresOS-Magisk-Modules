@@ -10,7 +10,7 @@ Part of the [DresOS Android Defensive Security System](https://github.com/The-Dr
 
 Replaces Android System WebView with [DresOS WebView](https://github.com/The-DresOS-Foundation/DresOS-WebView), our own webview to complement the module.
 
-[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/tag/webview-v2.3.1)
+[Download latest release](https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/webview-v2.3.1/DresOS-WebView-v2_3_1.zip)
 
 |  |  |
 | --- | --- |

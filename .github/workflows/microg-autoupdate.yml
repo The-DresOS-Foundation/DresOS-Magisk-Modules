@@ -21,6 +21,9 @@ jobs:
         with:
           lfs: false
 
+      - name: Restore the bundled Aurora APKs from LFS
+        run: git lfs pull --include="microg/apk/Aurora*.apk"
+
       - name: Put android build-tools on PATH
         run: |
           BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
@@ -66,6 +69,7 @@ jobs:
           gh release create "microg-${{ steps.bump.outputs.newver }}" \
             "microg/${{ steps.bump.outputs.zip }}" \
             --title "DresOS microG ${{ steps.bump.outputs.newver }}" \
-            --notes "Automatic refresh of the bundled apps: ${{ steps.bump.outputs.moved }}.
+            --notes "Automatic refresh of the bundled microG core: ${{ steps.bump.outputs.moved }}.
 
-          The bundled apps keep their own upstream signatures. The build refuses to run if the microG core is not signed with the official microG key, or if Aurora Store or Aurora Services are not signed with the keys pinned in build-module.sh."
+          The microG core is verified against the official microG signing key before it is staged. Aurora Store and Aurora Services are bundled at pinned versions and pinned keys, and are not refreshed automatically." \
+          || gh release upload "microg-${{ steps.bump.outputs.newver }}" "microg/${{ steps.bump.outputs.zip }}" --clobber
