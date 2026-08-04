@@ -1,3 +1,8 @@
+## v2.3.2
+
+- Rolled the arm64 engine back to the Chromium 145 build, the one this module shipped through v2.2.x. The Cromite 148 engine introduced in v2.3.0 crashes the renderer on real pages. It was compiled with the dangling pointer check left on and set to fatal, which release Chromium ships disabled, so a page that loads fine everywhere else aborts its render process the moment that check trips. Until the 148 engine is rebuilt with that check off, the known good 145 engine goes back in.
+- Nothing else changed. The 32 bit AOSmium backup, the per architecture overlays, the installer and the activation flow are all exactly as they were in v2.3.1.
+
 ## v2.3.1
 
 - Fixed the overlay offering both engines on the same device. The installer has always placed only one engine, chosen by the device architecture, but the overlay whitelisted both, so an arm64 phone advertised AOSmium as a selectable WebView provider even though the module never installed it there. AOSmium is the engine for the architectures the DresOS build cannot serve, not an alternative sitting next to it. There are now two overlays, one per architecture, and each device gets only the one that matches it plus the stock fallbacks.
