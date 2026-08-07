@@ -39,6 +39,18 @@ if [ "$VISIBLE" -ne 1 ]; then
 fi
 log "PackageManager sees $WEBVIEW_PKG"
 
+STRAY=$(pm path "$WEBVIEW_PKG" 2>/dev/null | grep -m1 "^package:/data/")
+if [ -n "$STRAY" ]; then
+    log "Stray updated copy of $WEBVIEW_PKG in data, reverting to the bundled engine."
+    pm uninstall-system-updates "$WEBVIEW_PKG" >> "$LOG" 2>&1
+    sleep 3
+    if pm path "$WEBVIEW_PKG" 2>/dev/null | grep -q "^package:/data/"; then
+        log "WARNING: stray copy still present after revert, activation may pick the wrong version."
+    else
+        log "Reverted to the bundled engine."
+    fi
+fi
+
 PREV_PROVIDER=$(settings get global webview_provider 2>/dev/null | tr -d ' ')
 CLEAR=0
 [ -f "$MODDIR/clear_stale_provider" ] && CLEAR=1

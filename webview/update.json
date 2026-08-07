@@ -1,6 +1,6 @@
 {
-  "version": "v2.3.2",
-  "versionCode": 232,
-  "zipUrl": "https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/webview-v2.3.2/DresOS-WebView-v2_3_2.zip",
+  "version": "v2.3.3",
+  "versionCode": 233,
+  "zipUrl": "https://github.com/The-DresOS-Foundation/DresOS-Magisk-Modules/releases/download/webview-v2.3.3/DresOS-WebView-v2_3_3.zip",
   "changelog": "https://raw.githubusercontent.com/The-DresOS-Foundation/DresOS-Magisk-Modules/main/webview/CHANGELOG.md"
 }
