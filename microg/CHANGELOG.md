@@ -1,3 +1,7 @@
+## v3.1.8
+
+- Automatic refresh of the bundled apps: com.android.vending 84022632 to 84022634, com.google.android.gms 252432032 to 252432034.
+
 ## v3.1.7
 
 - Automatic refresh of the bundled apps: com.android.vending 84022630 to 84022632, com.google.android.gms 250932030 to 252432032.
